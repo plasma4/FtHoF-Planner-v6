@@ -39,7 +39,7 @@
 
         <p></p><b>Based on FtHoF planner v1, v2, v3, v4, and v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan, and Joseph. Huge thanks to them for
         creating such a helpful (and moddable) tool!</br>
-        The current version is compatible with cookie clicker 2.052, "often imitated, never duplicated". You can find combo data in the console logs!
+        The current version is compatible with cookie clicker 2.058, "housekeeping". You can find combo data in the console logs!
         <br>
         <md-button class="md-raised md-primary" ng-click="collapse_interface(1)">Version History</md-button></b></p>
         <div class="collapse-content" id="content-1">
@@ -372,7 +372,7 @@
                 </md-toolbar>
                 <md-content>
                     <md-list flex>
-                        <md-subheader class="md-no-sticky">Season is not Easter or Valentines.</md-subheader>
+                        <md-subheader class="md-no-sticky">No season or Christmas active.</md-subheader>
                         <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null" title="{{cookie_list[0].description}}">
                             <img ng-src='{{cookie_list[0].icon}}'
                                  class="md-avatar" alt="Golden Cookie"/>
@@ -399,7 +399,7 @@
                 </md-toolbar>
                 <md-content>
                     <md-list flex>
-                        <md-subheader class="md-no-sticky">Season is Easter or Valentines.</md-subheader>
+                        <md-subheader class="md-no-sticky">Season is not Christmas.</md-subheader>
                         <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null" title="{{cookie_list[1].description}}">
                             <img ng-src='{{cookie_list[1].icon}}'
                                  class="md-avatar" alt="Golden Cookie"/>

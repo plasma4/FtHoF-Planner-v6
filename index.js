@@ -244,7 +244,6 @@ app.controller('myCtrl', function ($scope) {
 		console.log($scope.cookies);
 		console.log(bsIndices);
 		console.log(skipIndices);
-		console.log(Date.now() - currentTime);
 
 		$scope.combos = {}
 
