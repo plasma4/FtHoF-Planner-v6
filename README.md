@@ -1,8 +1,8 @@
-# FtHoF-Planner-v5
+# FtHoF-Planner-v6.1
 
 FtHoF Planner for Cookie Clicker by Orteil
 </br></br>
-<i>This version is compatible with version 2.052, "often imitated, never duplicated"  update that went live on 07-05-2023</i>
+<i>This version is compatible with version 2.058, "housekeeping"</i>
 
 <h3>Usage</h3>
 <div>

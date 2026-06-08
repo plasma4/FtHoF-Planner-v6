@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/html">
+
 <head>
     <!-- Angular Material requires Angular.js Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -8,230 +9,604 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
     <!-- Angular Material Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+    <!-- Angular-drag-and-drop-lists Library -->
+    <script src="./libraries/angular-drag-and-drop-lists.min.js"></script>
+    <!-- Optimized Spell Tooltips (replaces angular-tooltips) -->
+    <script src="./tooltip.js"></script>
 
-    <script src="base64.js"></script>
-    <script src="index.js"></script>
+    <script defer src="base64.js"></script>
+    <script defer src="index.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
 
 
-    <title>FtHoF Planner v6</title>
+    <title>FtHoF Planner v6.1</title>
 </head>
+
 <body>
-<md-toolbar>
-    <div class="md-toolbar-tools">
-        <h1>
-            <span>Cookie Clicker FtHoF Planner v6</span>
-        </h1>
-    </div>
-</md-toolbar>
-<div ng-app="myApp" ng-controller="myCtrl" class="{{(dark_mode ? 'dark' : 'normal') + (default_font ? ' default' : '')}}">
-    <div class="content">
-        <div layout="row">
-            <md-input-container flex>
-                <label>Save Code/Seed</label>
-                <input onClick="this.select();" ng-model="save_string" style="color: grey;">
-            </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="load_game()">Import Save or Seed</md-button>
-        </div>
+    <div id="app" ng-app="myApp" ng-controller="myCtrl" md-theme="{{dark_mode ? 'dark' : 'default'}}"
+        ng-class="{'dark': dark_mode, 'default_font': default_font}">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h1>
+                    <span>Cookie Clicker FtHoF Planner v6.1</span>
+                </h1>
+            </div>
+        </md-toolbar>
+        <div class="content">
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Save Code/Seed</label>
+                    <input onClick="this.select();" ng-model="save_string" style="color: grey;">
+                </md-input-container>
+                <md-button class="md-raised md-primary" ng-click="load_game()">Import Save or Seed</md-button>
+            </div>
+          <div class="save-export-help">Can't export save? <a href="https://cursedsliver.github.io/dryCracker" target="_blank">Find out your seed here!</a> (note: not compatible for mobile app)</div>
+          <br>
 
-        <p></p><b>Based on FtHoF planner v1, v2, v3, v4, and v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan, and Joseph. Huge thanks to them for
-        creating such a helpful (and moddable) tool!</br>
-        The current version is compatible with cookie clicker 2.058, "housekeeping". You can find combo data in the console logs!
-        <br>
-        <md-button class="md-raised md-primary" ng-click="collapse_interface(1)">Version History</md-button></b></p>
-        <div class="collapse-content" id="content-1">
-            <ul>
-                <li><a href="http://fthof-planner.s3-website.us-east-2.amazonaws.com/">FtHoF planner V1</a> by
-                    <a href="https://www.reddit.com/user/RebelKeithy">RebelKeithy</a> (reddit)
-                    <ul>
-                        <li>The first version made good use of the code that you can just copy from the cookie clicker
-                            website and interpreted the code in a way that made the first FtHoF planner. Basic but a
-                            powerful start.
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="https://messieurs.github.io/fthofplannerv2/">FtHoF planner v2</a> by
-                    <a href="https://discord.gg/cookie">@skeezy</a> (discord)
-                    <ul>
-                        <li>The second version of the FtHoF planner with undeniable the biggest update to it to date.
-                            The new version also made it possible to have a look into Gambler's Fever Dream and a
-                            combo-finder was added which made it more easy to actually find them.
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="https://eminenti.github.io/FtHoF-Planner-v3/">FtHoF planner v3</a> by
-                    <a href="https://discord.com/invite/r6hssr5">@eminenti</a> (discord)
-                    <ul>
-                        <li>The third version was mainly a bugfix because of a bugfix. The original and second FtHoF
-                            planners made use (just like the original cookie clicker) of a second possible change to
-                            alter the outcome of FtHoF (the chime sound). This was a bug and fixed by Orteil. This broke the first 2
-                            planners and was fixed in V3. Later on, the combo-finder was fixed to not to calculate those
-                            outcomes for Gambler's Fever Dream.
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="https://mylaaan.github.io/FtHoF-Planner-v4/">FtHoF planner v4</a> by
-                    <a href="https://discord.gg/cookie">@mylaaan</a> (discord)
-                    <ul>
-                        <li>The fourth version only added ease of use interface options, such as the "Cast Spell" button to
-                            make it easier to keep track of where you are without importing the save again. It also updated
-                            some visual features and removed Google Analytics.
-                        </li>
-                    </ul>
-                </li>
-				<li><a href="https://joseph3079.github.io/FtHoF-Planner-v5/">FtHoF planner v5</a> by
-                    <a href="https://discord.gg/cookie">@joseph3079</a> (discord)
-                    <ul>
-                        <li>The fifth version added a "Random Seed" column, which can be used to see how many onscreen cookies will cause a spell to backfire without needing to change settings repeatedly, and can be used to tell what Gambler's Fever Dream will give when it can't choose all 8 spells. Additionally, it now shows building specials, elder frenzies, and sugar lumps that aren't visible due to a wrong backfire chance.
-                        </li>
-                    </ul>
-                </li>
-				<li><a href="https://plasma4.github.io/FtHoF-Planner-v6/">FtHoF planner v6</a> by
-                    <a href="https://discord.gg/cookie">@1_e0</a> (discord)
-                    <ul>
-                        <li>This version introduces the option to directly import a seed, more info on Gambler's Fever Dream offset abuse, particularly for Gambler's Fever Dream casts that return FtHoF by hovering over a particular FtHoF GFD cell, and some more UI options. You can also view a short description of what a golden or wrath cookie does by hovering over that cell. Some other things that have not been added yet are planned, such as a combo finder (simulates theoretical combos through brute-force, with gfd consideration, but with customizable combo options)
-                        </li>
-                    </ul>
-                </li>
+            <p ng-show="advancedFeatures" style="text-align: center;"><b>Based on FtHoF planner v1, v2, v3, v4, v5, and v6 by RebelKeithy, Skeezy,
+                    Eminenti, Mylaaan, Joseph, and Leo. <br>Huge thanks to them for
+                    creating such a helpful (and moddable) tool!</br>
+                    The current version is compatible with cookie clicker 2.058, "housekeeping".</b></p>
+            <br>
+            <div layout="row">
+                <md-button class="md-raised md-primary" ng-click="collapse_interface(1)" ng-show="hasSeed">Version History</md-button>
+                <span flex></span>
+                <md-button class="md-raised md-primary md-warn" ng-click="wipeAllSettings();" ng-show="hasSeed">Reset all saved settings to default and reload</md-button>
+            </div>
+            <div class="collapse-content" id="content-1">
+                <ul>
+                    <li><a href="http://fthof-planner.s3-website.us-east-2.amazonaws.com/">FtHoF planner V1</a> by
+                        <a href="https://www.reddit.com/user/RebelKeithy">RebelKeithy</a> (reddit)
+                        <ul>
+                            <li>The first version made good use of the code that you can just copy from the cookie
+                                clicker
+                                website and interpreted the code in a way that made the first FtHoF planner. Basic but a
+                                powerful start.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="https://messieurs.github.io/fthofplannerv2/">FtHoF planner v2</a> by
+                        <a href="https://discord.gg/cookie">@skeezy</a> (discord)
+                        <ul>
+                            <li>The second version of the FtHoF planner with undeniable the biggest update to it to
+                                date.
+                                The new version also made it possible to have a look into Gambler's Fever Dream and a
+                                combo-finder was added which made it more easy to actually find them.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="https://eminenti.github.io/FtHoF-Planner-v3/">FtHoF planner v3</a> by
+                        <a href="https://discord.com/invite/r6hssr5">@eminenti</a> (discord)
+                        <ul>
+                            <li>The third version was mainly a bugfix because of a bugfix. The original and second FtHoF
+                                planners made use (just like the original cookie clicker) of a second possible change to
+                                alter the outcome of FtHoF (the chime sound). This was a bug and fixed by Orteil. This
+                                broke the first 2
+                                planners and was fixed in V3. Later on, the combo-finder was fixed to not to calculate
+                                those
+                                outcomes for Gambler's Fever Dream.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="https://mylaaan.github.io/FtHoF-Planner-v4/">FtHoF planner v4</a> by
+                        <a href="https://discord.gg/cookie">@mylaaan</a> (discord)
+                        <ul>
+                            <li>The fourth version only added ease of use interface options, such as the "Cast Spell"
+                                button to
+                                make it easier to keep track of where you are without importing the save again. It also
+                                updated
+                                some visual features and removed Google Analytics.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="https://joseph3079.github.io/FtHoF-Planner-v5/">FtHoF planner v5</a> by
+                        <a href="https://discord.gg/cookie">@joseph3079</a> (discord)
+                        <ul>
+                            <li>The fifth version added a "Random Seed" column, which can be used to see how many
+                                onscreen cookies will cause a spell to backfire without needing to change settings
+                                repeatedly, and can be used to tell what Gambler's Fever Dream will give when it can't
+                                choose all 8 spells. Additionally, it now shows building specials, elder frenzies, and
+                                sugar lumps that aren't visible due to a wrong backfire chance.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="https://plasma4.github.io/FtHoF-Planner-v6/">FtHoF planner v6 and v6.1</a> by
+                        <a href="https://discord.gg/cookie">@1_e0, @cursedsliver, @zypa</a> (discord)
+                        <ul>
+                            <li>This version is a radical redesign of the entire user interface, 
+                                prioritizing readability, approachability, and modernization. 
+                                Additionally, it introduces:
+                                <br>The option to directly import a seed;
+                                <br>Tooltips regarding various things such as spell effects, hidden spell effects, and GFD FtHoF outcomes;
+                                <br>A brand new unified guide;
+                                <br>Loading a customizable amount of new spells;
+                                <br>Ability to define custom highlights;
+                                <br>Finnless destroyer mod integration;
+                                <br>And various new UI options.
+                                <br>On the technical side, the entire codebase underwent a refactor.
+                            </li>
+                        </ul>
+                    </li>
 
-                <md-divider style="margin: 1em 0;"></md-divider>
-                <li>For feature requests or bug reports, tell me on the Dashnet Forums Discord server.
-                </li>
-                <li>If you make a bug report, please add the save export. This makes it easier to visualise
-                    the problem you're facing and I can make sure it is fixed instead of almost being sure.
-                </li>
-                </li>
-            </ul>
-        </div>
-        <md-button class="md-raised md-primary" ng-click="collapse_interface(2)">Guide</md-button>
-        </p>
-        <div class="collapse-content" id="content-2">
-            Guide from RebelKeithy, Skeezy, Mylaaan, and Joseph:
-            <ul>
-                <pre>RebelKeithy</pre>
+                    <md-divider style="margin: 1em 0;"></md-divider>
+                    <li>For feature requests or bug reports, ping @cursedsliver on the <a href="https://discord.gg/cookie" target="_blank">Dashnet Forums Discord server</a> and ask.
+                    </li>
+                    <li>If you make a bug report, please add the save export. This makes it easier to visualise
+                        the problem you're facing and I can make sure it is fixed instead of almost being sure.
+                    </li>
+                    </li>
+                </ul>
+            </div>
+            <div style="width: 100%; display: flex;" ng-show="hasSeed">
+                <md-button class="md-raised" ng-show="advancedFeatures" ng-click="collapse_interface(2)"
+                    style="flex: 1;">Historical Guide</md-button>
+                <md-button class="md-raised md-primary"
+                    ng-click="collapse_interface(4); unifiedGuideIsOpen = !unifiedGuideIsOpen;"
+                    style="flex: 2;">{{unifiedGuideIsOpen?'Close guide':'Click me for help! (unified
+                    guide)'}}</md-button>
+                <md-button class="md-raised{{advancedFeatures?'':' md-warn'}}"
+                    ng-click="toggleAdvancedFeatures()" style="flex: 1;">{{ advancedFeatures?'Hide advanced
+                    features':'Enable advanced features' }}</md-button>
+            </div>
+            </p>
+            <div class="collapse-content" id="content-4" style="text-align: center;">
+                <div style="text-align: center; width: 100%; margin-bottom: 10px;">
+                    Unified FtHoF Planner guide compiled by CursedSliver. Based on the historical guide made by RebelKeithy,
+                    Skeezy, Mylaaan, and Joseph.
+                    <br>Click each panel to open it.
+                </div>
+                <md-divider></md-divider>
+                <md-toolbar class="md-hue-2" style="cursor: pointer;" ng-click="guideHidingStatuses[0] = !guideHidingStatuses[0]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>About the Grimoire</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[0]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[0]">
+                    <p>The Grimoire is a minigame in cookie clicker unlocked by getting your wizard towers to at least
+                        level 1 using a sugar lump.
+                        Sugar lumps are unlocked at 1 billion cookies baked.
+                        <br>If you don't have the Grimoire unlocked, you aren't ready to use this tool.
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        <img src="./img/grimoire.png"><br>
+                        <small>A screenshot of the Grimoire minigame.</small><br>
+                        In the Grimoire, you cast spells from a selection of 9 different spells to boost your production
+                        in various ways. Casting spells cost magic, which regenerates over time.<br>
+                        Each spell also has a small chance to "backfire" when casted, producing a different set of
+                        "unintended" effects that are sometimes negative.<br>
+                        This tool is primarily concerned with the second spell in the list, called <b>F</b>orce
+                        <b>t</b>he <b>H</b>and <b>o</b>f <b>F</b>ate (<b>FtHoF</b> for short). <br>
+                        <br><img src="./img/fthof.png"><br>
+                        <small>Description for Force the Hand of Fate.</small><br>
+                        <br>The probabilities of getting each of the various golden cookie effects are different from
+                        the probabilities of naturally spawned golden cookies.
+                        <br><br><img src="./img/FtHoFProbs.png"><br>
+                        <small>The modified effect probabilities of various effects from FtHoF. Notably, Click frenzy
+                            (777x click power) is much more common than normal.</small>
+                    </p>
+                </div>
+                <md-divider></md-divider>
+                <md-toolbar class="md-hue-1" style="cursor: pointer;" ng-click="guideHidingStatuses[1] = !guideHidingStatuses[1]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>Effect predictions</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[1]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[1]">
+                    <p>
+                        The Grimoire has many random elements. Force the Hand of Fate (shorthand: FtHoF) in particular,
+                        as seen above, can give many different effects at different probabilities.
+                        <br>One particular property of the Grimoire is that its random elements cannot be rerolled. This
+                        is called "seeded random". To see what I mean, do the following:
+                        <br>1. Make a backup of your current game using the Export save button in options.
+                        <br>2. Cast Force the Hand of Fate (FtHoF).
+                        <br>3. Click the golden/wrath cookie that spawns, and note down its effect. (also note down
+                        where it spawned)
+                        <br>4. Import the backup you made to go back to before you casted the spell.
+                        <br>5. Go back to step 2 as many times as needed. You will see that you will always get the same
+                        effect from that golden/wrath cookie,
+                        it will either stay golden or stay wrath, and it will always spawn at the same place, <b>no
+                            matter how many times you do it</b>.
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        This is because randomness in the Grimoire is based on a hidden "game seed" and the amount of
+                        spells you have ever casted in the Grimoire.
+                        The game seed only changes when you ascend, while the spell casted number increments by 1 for
+                        each spell you cast. You can see how many you have casted below the magic bar.
+                        <br><img src="./img/castCount.png">
+                        <br><small>The important number is second one, after "total:"</small>
 
-                <li>
-                    <b>Force the Hand of Fate is not completely random, it is based on your game's seed (which changes
-                        after each ascension) and on the number of spells cast this game. This means that if you know
-                        the seed then you can predict the results for casting Force the Hand of Fate:</b>
-                    <ul>
-                        <li>There are two main things that can affect the result of FtHoF, the current season <s>and the
-                            golden cookie sound selector</s>. If the season is Valentines or Easter the random seed will
-                            be
-                            increased once. This means there are 2 possible results for each cast of FtHoF depending on
-                            the selected season. Continuing to switch between seasons will not affecting the results,
-                            they only affect the result at the time the spell is cast.
-                        </li>
-                        <li>Dragonflight can also affect the results of casting FtHoF. If the buff is active (not just
-                            possible) when FtHoF is cast then Click Frenzy is not added to the pool of possible results.
-                            This can change the result even if the original result was not a Click Frenzy.
-                        </li>
-                        <li>Another thing that after the result is how many golden cookies are already on the screen.
-                            Each one increases the chance of failure by 15%.
-                        </li>
-                        <li>Since the result of FtHoF is based on the number of spells cast, if the next FtHoF cookie is
-                            not the one you want, you can cast a different spell to skip this one. This can be useful if
-                            you are searching for a particular cookie or need to skip a wrath cookie.
-                        </li>
-                    </ul>
-                </li>
+                        <br>If neither of those changes, the same spell will <b>always</b> give the same outcome.
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        Because the randomness only depends on those two things, this tool extracts the hidden game seed
+                        from your save file,
+                        and uses that to produce predictions about what you will get next from FtHoF (you should know
+                        what this means by now) by reverse engineering the game's code.
+                        <br>The table at the bottom of the website contains your future predictions. You can hover over
+                        each effect to see what it means. A wrath cookie indicates backfiring, while a golden cookie indicates success.
+                        <span class="notice">
+                            Note: these predictions are only 100% valid without any backfire chance modifiers; things such as on-screen unclicked golden/wrath cookies, Diminish Ineptitude (spell), and Supreme intellect (aura) modify backfire chance.
+                            <br>If you do have any backfire chance modifiers, you can use the "Set backfire modifiers" button to input any modifiers that you may have.
+                        </span>
+                        <br><span class="notice alternate">Tip: because outcomes only depend on the game seed and the cast count, you can skip
+                            undesirable effects by casting a non-FtHoF, cheaper spell, saving magic regeneration
+                            time.</span>
+                    </p>
+                </div>
+                <md-divider></md-divider>
+                <md-toolbar class="md-hue-2" style="cursor: pointer;" ng-click="guideHidingStatuses[2] = !guideHidingStatuses[2]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>Terminology</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[2]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[2]">
+                    <p>
+                        Some parts of the table will include some abbrevations, and this is also useful for reading more advanced parts of this guide.
+                        <br>(For example, effects with an abbrevation wrapped in brackets after it indicates useful effects that are normally inaccessible, which you can hover over to view more information.)
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        Below are some useful abbrevations and terms to know for this tool. You don't have to memorize them; you can refer back to this page when needed.
+                    </p>
+                    <md-table><md-table-container><table>
+                        <thead>
+                            <tr>
+                                <th>Term</th>
+                                <th>Proper name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>FtHoF</td>
+                                <td>Force the Hand of Fate</td>
+                                <td>The second spell in the Grimoire, spawns a custom Golden/Wrath cookie.</td>
+                            </tr>
+                            <tr>
+                                <td>GFD</td>
+                                <td>Gambler's Fever Dream</td>
+                                <td>The seventh spell in the Grimoire, selects a random spell to cast using less magic than normal.</td>
+                            </tr>
+                            <tr>
+                                <td>GC</td>
+                                <td>Golden cookie</td>
+                                <td>Rare temporary collectibles that give boosts.</td>
+                            </tr>
+                            <tr>
+                                <td>WC</td>
+                                <td>Wrath cookie</td>
+                                <td>A variant of golden cookies that sometimes give negative effects.</td>
+                            </tr>
+                            <tr>
+                                <td>Onscreen</td>
+                                <td>Onscreen golden/wrath cookies</td>
+                                <td>An unclicked Golden/wrath cookie. These unclicked cookies increase backfire chance of FtHoF.</td>
+                            </tr>
+                            <tr>
+                                <td>SI</td>
+                                <td>Supreme Intellect</td>
+                                <td>A dragon aura that makes all spells 10% cheaper but increases base backfire chance by 1.1x</td>
+                            </tr>
+                            <tr>
+                                <td>RB</td>
+                                <td>Reality Bending</td>
+                                <td>A dragon aura that makes has 10% of the effects of Supreme Intellect (SI).</td>
+                            </tr>
+                            <tr>
+                                <td>DI</td>
+                                <td>Diminish Ineptitude</td>
+                                <td>A spell that temporarily makes all spells 10 times less likely to backfire on success. Also refers to the effect it generates on success.</td>
+                            </tr>
+                            <tr>
+                                <td>CF</td>
+                                <td>Click frenzy</td>
+                                <td>An effect from Golden/wrath cookies, giving 777x cookie from clicks for a short period.</td>
+                            </tr>
+                            <tr>
+                                <td>EF</td>
+                                <td>Elder frenzy</td>
+                                <td>An effect from Wrath cookies, giving 666x CpS for an especially short period.</td>
+                            </tr>
+                            <tr>
+                                <td>BS</td>
+                                <td>Building special</td>
+                                <td>A category of effects from Golden/wrath cookies, where each building of a randomly chosen building type boosts CpS by 10% per.</td>
+                            </tr>
+                        </tbody>
+                    </table></md-table-container></md-table>
+                    <p>
+                        More lingo: <a href="https://docs.google.com/document/d/1m-ik_Ceq80VhX2HHS3nh7yj2_Kw1g-GozOJ2fw3gDSg/edit" target="_blank">click here</a>
+                    </p>
+                </div>
+                <md-toolbar class="md-hue-1" style="cursor: pointer;" ng-click="guideHidingStatuses[5] = !guideHidingStatuses[5]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>Gambler's Fever Dream, and the Random seed (ADVANCED)</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[5]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[5]">
+                    <div class="advanced-material-warning">This material is only applicable with Advanced features enabled. Toggle it on using the "ENABLE ADVANCED FEATURES" button besides the guide button.</div>
+                    <p>
+                        The Gambler's Dream column indicates what spell <b>G</b>ambler's <b>F</b>ever <b>D</b>ream (GFD) will choose to cast. 
+                        <br><br><img src="./img/gfd.png"><br>
+                        <br>This is useful because spells casted through GFD are cheaper.
+                        <br>If a GFD would cast FtHoF, hovering over the cell would display what that FtHoF will cast. This is usually the outcomes on the row below it.
+                        <br>Despite what the effect description says, GFD actually raises the backfire chance to a minimum of 50% instead of doubling it.
+                        <br><span class="notice">Note: GFD is still a spell, so casting it will cause it to progress to the next outcome.</span>
+                        <br><span class="notice alternate">Also note: This column is valid IF and only if all spells are castable by GFD. 
+                            A spell is not castable if you don't have enough magic for GFD to cast it, even with the halved magic cost. 
+                            The minimum amount of magic you need for it to be valid is 22/22 magic.
+                        <br>You can see a more accurate version according to your magic counts by inputting them into the planner through the "Configure magic counts" button just above the table.</span>
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        The Random seeds column displays a hidden number associated with each row of outcomes that, due to the peculiar way the game is programmed, dictates both backfiring and GFD outcome.
+                        Beside the number you can see how many on-screen golden/wrath cookies it takes for the cast to backfire. (each one adds +15% to backfire chance)
+                        <br>Knowledgeable players also use this information to determine GFD transmutations.
+                        <br><span class="notice">GFD transmutation: GFD can be coerced into casting something that it would not normally cast, 
+                            by adjusting magic count and max magic count such that a specific subset of spells are castable by GFD.
+                        </span>
+                    </p>
+                </div>
+                <md-toolbar class="md-hue-2" style="cursor: pointer;" ng-click="guideHidingStatuses[3] = !guideHidingStatuses[3]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>Combo finder (ADVANCED)</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[3]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[3]">
+                    <div class="advanced-material-warning">This material is only applicable with Advanced features enabled. Toggle it on using the "ENABLE ADVANCED FEATURES" button besides the guide button.</div>
+                    <p>The Combo finder can be accessed through the "Open Combo finder" button.</p>
+                    <md-divider></md-divider>
+                    <p>
+                        A combo is a cluster of close-by Building Specials (BSs). Click frenzies (CFs) are ignored because they are extremely common and one can be assumed to exist near any combo that you find.
+                        <br>The combo finder finds those in the seed/save inputted. Note: the combo finder is mainly useful with advanced strategies such as <a href="https://tinyurl.com/CookieFinnlessGrimoire" target="_blank">quadcasting</a> and with at least 600 wizard towers.
+                    </p>
+                    <p>
+                        <b>Combo finder settings</b>
+                        <br>Min combo: the minimum amount of BSs to find.
+                        <br>Max combo: the maximum amount of BSs to find. 
+                        <br>Max spread: dictates how close together the rows with BS must be. Each point of spread is one spell in the sequence that can be non-BS and cannot be skipped for free. 
+                        For example, if you want a 3x combo and are ok with a sequence of [BS, non-BS, BS, BS], that would be a combo size of 3 with a spread of 1, for a total length of 4.
+                        <br>Include Elder frenzies: Elder Frenzies (666x cps for a very short time) also counts as a BS.
+                        <br>Skip abomination: Rows without a useful effect like BS but with Gambler's Fever Dream (GFD) casting Resurrect Abomination does not contribute to its spread (spread from Max spread setting).
+                        This is because on such a row, if you cast GFD while the grandmapocalypse is NOT ongoing, you will go to the next row for free.
+                        <br>Skip spontaneous edifices: Rows without a useful effect like BS but with Gambler's Fever Dream (GFD) casting Spontaneous Edifice successfully does not contribute to its spread (spread from Max spread setting).
+                        Same story as Skip abomination, because on such a row, if you cast GFD while you have at least 400 of every building, you will go to the next row for free.
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        <b>Routing resources</b>
+                        <br>Routing is the act of taking a potential combo and figuring out a way to turn this potential combo into a real combo with a series of executable steps. This is only applicable for very late game (800+ towers) and you need to perform combos with 2+ effects from the Grimoire to progress.
+                        <br><a href="https://cursedsliver.github.io/CCGrimoireCalculator" target="_blank">Grimoire calculator:</a> a tool to figure out spell costs and tower counts quickly. Requires some advanced knowledge of the Grimoire to use.
+                        <br><a href="https://tinyurl.com/CookieFinnlessGrimoire" target="_blank">Finnless Grimoire guide:</a> a late-game guide containing information on how to find and route a combo, including information on how to use the Grimoire calculator above.
+                        <br>You can also go to the <a href="https://discord.gg/cookie" target="_blank">Official Cookie clicker Discord server</a> to ask for help routing a combo.
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        <b>Finnless destroyer</b>
+                        <br>Finnless destroyer is a <a href="https://github.com/xyntercept/finnless-destroyer/tree/main" target="_blank">mod</a> developed by @xyntercept on discord, integrated into this planner. 
+                        <br>It is a very advanced tool for top finnless players to be able to find extremely large combos (10+ effects) quickly.
+                    </p>
+                </div>
+                <md-toolbar class="md-hue-1" style="cursor: pointer;" ng-click="guideHidingStatuses[4] = !guideHidingStatuses[4]">
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate>Custom highlights (ADVANCED)</h2>
+                        <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
+                            <md-icon md-svg-icon="img/upArrow.svg"
+                                class="{{guideHidingStatuses[4]?'flipped':''}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="block" ng-if="guideHidingStatuses[4]">
+                    <div class="advanced-material-warning">This material is only applicable with Advanced features enabled. Toggle it on using the "ENABLE ADVANCED FEATURES" button besides the guide button.</div>
+                    <p>Highlight settings can be accessed through the "Show/hide Highlight settings" button.</p>
+                    <md-divider></md-divider>
+                    <p>
+                        In the planner, some noteworthy outcomes (such as BS and EF) are highlighted to make them easier to spot. 
+                        <br>You can modify what outcomes are considered noteworthy, change their colors, or add new highlights. 
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        Advanced mode can be toggled through the top-right button.
+                        <br>Advanced mode allows you to add filtering logic to your highlights. 
+                        For example, it can detect consecutive BSes, by making a BS outcome only highlight blue if there is a BS in the row above it.
+                        <br>Information about the syntax can be through the "Advanced help" button.
+                    </p>
+                </div>
+            </div>
+            <div class="collapse-content" id="content-2">
+                <div class="historical-guide-notice">
+                    Out of respect for the previous maintainers of this tool, this old guide has been archived here.
+                </div>
+                Guide from RebelKeithy, Skeezy, Mylaaan, and Joseph:
+                <ul>
+                    <pre>RebelKeithy</pre>
 
-                <pre>Skeezy</pre>
+                    <li>
+                        <b>Force the Hand of Fate (also called FtHoF) is not completely random, it is based on your
+                            game's seed (which changes
+                            after each ascension) and on the number of spells cast this game. This means that if you
+                            know
+                            the seed then you can predict the results for casting Force the Hand of Fate:</b>
+                        <ul>
+                            <li>There are two main things that can affect the result of FtHoF, the current season <s>and
+                                    the
+                                    golden cookie sound selector</s>. <s>If the season is Valentines or Easter the
+                                    random seed will
+                                    be
+                                    increased once</s> Some seasons will alter the outcomes of FtHoF. This means there
+                                are 2 possible results for each cast of FtHoF depending on
+                                the selected season. Continuing to switch between seasons will not affecting the
+                                results,
+                                they only affect the result at the time the spell is cast.
+                            </li>
+                            <li>Dragonflight can also affect the results of casting FtHoF. If the buff is active (not
+                                just
+                                possible) when FtHoF is cast then Click Frenzy is not added to the pool of possible
+                                results.
+                                This can change the result even if the original result was not a Click Frenzy.
+                            </li>
+                            <li>Another thing that after the result is how many golden cookies are already on the
+                                screen.
+                                Each one increases the chance of failure by 15%.
+                            </li>
+                            <li>Since the result of FtHoF is based on the number of spells cast, if the next FtHoF
+                                cookie is
+                                not the one you want, you can cast a different spell to skip this one. This can be
+                                useful if
+                                you are searching for a particular cookie or need to skip a wrath cookie.
+                            </li>
+                        </ul>
+                    </li>
 
-                <li>
-                    <b>Combo search: Once you import a save file, the planner will display both the earliest and
-                        shortest versions of combos. Combos are combinations of Building Specials (BS) (and optionally
-                        Elder Frenzies (EF)) that are close together:</b>
-                    <ul>
-                        <li>Min combo is the smallest combo to search for; Max is the largest.</li>
-                        <li>Spread is how much leeway to include in the combo search. For example, if you want a 3x
-                            combo and are ok with a sequence of [BS, non-BS, BS, BS], that would be a combo size of 3
-                            with a spread of 1, for a total length of 4.
-                        </li>
-                        <li>Include Elder Frenzies is asking whether to count EF spawns from FtHoF in your combos. For
-                            most people these are just as good, if not better than Building Specials, so they're
-                            included by default. But in some cases you may not want EF via FtHoF, so I have an option to
-                            exclude it.
-                        </li>
-                        <li>For Skip Abominations and Skip Spontaneous Edifices, see below for more explanation, but
-                            these options are just asking whether to factor in skippable rows when searching for combos.
-                            Can't imagine why you'd want this off, but I have the option there at least for educational
-                            purposes.
-                        </li>
-                    </ul>
-                </li>
+                    <pre>Skeezy</pre>
 
-                <li>
-                    <b>Gambler's fever dream: Added a column for this, as it's critical to getting combos:</b>
-                    <ul>
-                        <li>More chances for Building Special or Elder Frenzy via Gambler's -> FtHoF. Plus these casts
-                            end up costing significantly less mana, which can help with more spread-out combos. Hover
-                            over the cookie when it's FtHoF to see what the cookie might contain
-                        </li>
-                        <li>Allows for more combos by skipping over certain rows when desired. (Abominations and
-                            successful Spontaneous Edifice casts from Gambler's can both increment your spell counter
-                            for free, i.e. without costing any mana.)
-                        </li>
-                        <li>For the same skipping reason as above, this can help in incrementing your spell counter
-                            quickly to get to your desired combo.
-                        </li>
-                    </ul>
-                </li>
-                <li>Lookahead length: This is how many grimoire casts (rows) are loaded when you import (original had it
-                    hard-coded to 10).
-                </li>
-                <li>Spell counter column (the one on the left) now includes indices for both your spells casts this
-                    ascension, and total spells cast
-                </li>
-                <li>Building Specials and Elder Frenzies are highlighted yellow</li>
-                <li>Rows skippable via Gambler's have their Gambler's spell highlighted blue.</li>
+                    <li>
+                        <b>Combo search: Once you import a save file, the planner will display both the earliest and
+                            shortest versions of combos. Combos are combinations of Building Specials (BS) (and
+                            optionally
+                            Elder Frenzies (EF)) that are close together:</b>
+                        <ul>
+                            <li>Min combo is the smallest combo to search for; Max is the largest.</li>
+                            <li>Spread is how much leeway to include in the combo search. For example, if you want a 3x
+                                combo and are ok with a sequence of [BS, non-BS, BS, BS], that would be a combo size of
+                                3
+                                with a spread of 1, for a total length of 4.
+                            </li>
+                            <li>Include Elder Frenzies is asking whether to count EF spawns from FtHoF in your combos.
+                                For
+                                most people these are just as good, if not better than Building Specials, so they're
+                                included by default. But in some cases you may not want EF via FtHoF, so I have an
+                                option to
+                                exclude it.
+                            </li>
+                            <li>For Skip Abominations and Skip Spontaneous Edifices, see below for more explanation, but
+                                these options are just asking whether to factor in skippable rows when searching for
+                                combos.
+                                Can't imagine why you'd want this off, but I have the option there at least for
+                                educational
+                                purposes.
+                            </li>
+                        </ul>
+                    </li>
 
-                <pre>Mylaaan</pre>
+                    <li>
+                        <b>Gambler's fever dream: Added a column for this, as it's critical to getting combos:</b>
+                        <ul>
+                            <li>More chances for Building Special or Elder Frenzy via Gambler's -> FtHoF. Plus these
+                                casts
+                                end up costing significantly less mana, which can help with more spread-out combos.
+                                Hover
+                                over the cookie when it's FtHoF to see what the cookie might contain
+                            </li>
+                            <li>Allows for more combos by skipping over certain rows when desired. (Abominations and
+                                successful Spontaneous Edifice casts from Gambler's can both increment your spell
+                                counter
+                                for free, i.e. without costing any mana.)
+                            </li>
+                            <li>For the same skipping reason as above, this can help in incrementing your spell counter
+                                quickly to get to your desired combo.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Lookahead length: This is how many grimoire casts (rows) are loaded when you import (original
+                        had it
+                        hard-coded to 10).
+                    </li>
+                    <li>Spell counter column (the one on the left) now includes indices for both your spells casts this
+                        ascension, and total spells cast
+                    </li>
+                    <li>Building Specials and Elder Frenzies are highlighted yellow</li>
+                    <li>Rows skippable via Gambler's have their Gambler's spell highlighted blue.</li>
 
-                <li>
-                    <b>Cast Spell and Apply Settings:</b>
-                    <ul>
-                        <li>The Cast Spell button will forward the whole list 1 spell. It will also apply all settings,
-                            so if you have changed them, the outcome for future spells may change. If you have to cast
-                            FtHoF for a CF first you want to keep that cookie on screen, so you can increase the amount
-                            of golden cookies on screen at the same time.
-                        </li>
-                        <li>If you made progress you don't want to click the Import Save button as it will reset your
-                            manually cast spells. You can use Apply Settings to change stuff up without losing track.
-                        </li>
-                    </ul>
-                </li>
-                <li>For early game players the possibility to hide the One change column as they won't have Season
-                    Switcher
-                </li>
-                <li>Added a checkbox for the "Supreme Intellect" dragon aura as this should influence the
-                    positive/negative rate by 10% more negative. This is maybe a bug in the game but currently this
-                    button is a placebo or a placeholder for future implementation. The game and the planner do
-                    currently not step out of line when using the aura without any update to the planner.
-                </li>
+                    <pre>Mylaaan</pre>
 
-                <pre>Joseph3079</pre>
-				
-				<li>
-                    <b>Random Seed column:</b>
-                    <ul>
-                        <li>The Random Seed column shows how much of a backfire chance is required to make a spell backfire. If the random seed is between 0.85 and 1, the spell will backfire with no golden cookies on screen. If the random seed is between 0.7 and 0.85, it will backfire with 1 golden cookies on screen, but it will succeed with 0 golden cookies on screen.
-                        </li>
-                        <li>The same random number is used to determine what spell Gambler's Fever Dream chooses. If you have enough magic for any of the 8 spells to be chosen after paying GFD's cost, a random seed that is between 0 and 1/8 will choose the first spell (Conjure Baked Goods), a random seed that is between 1/8 and 2/8 will choose the second spell (FtHoF), and so on. If you don't have enough magic for GFD and half of the price of Spontaneous Edifice, there will only be 7 eligible spells, so a random seed between 0 and 1/7 will give Conjure Baked Goods, a random seed between 1/7 and 2/7 will give FtHoF, and so on. This might interfere with a GFD that says it will give FtHoF, but at a low enough magic amount it might give CBG instead.
-                        </li>
-                    </ul>
-                </li>
-				<li>The Supreme Intellect checkbox now actually works. Note that Supreme Intellect and Diminish Ineptitude multiply the base 15% backfire chance, and then the 15% increase in backfire chance per on screen GC is added afterward, so a cast with a successful DI, SI active, and 3 on screen GCs would have a 46.65% chance of backfiring, which would mean any spell with a random seed less than 0.5335 would succeed.
-                </li>
-            </ul>
-        </div>
+                    <li>
+                        <b>Cast Spell and Apply Settings:</b>
+                        <ul>
+                            <li>The Cast Spell button will forward the whole list 1 spell. It will also apply all
+                                settings,
+                                so if you have changed them, the outcome for future spells may change. If you have to
+                                cast
+                                FtHoF for a CF first you want to keep that cookie on screen, so you can increase the
+                                amount
+                                of golden cookies on screen at the same time.
+                            </li>
+                            <li>If you made progress you don't want to click the Import Save button as it will reset
+                                your
+                                manually cast spells. You can use Apply Settings to change stuff up without losing
+                                track.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>For early game players the possibility to hide the One change column as they won't have Season
+                        Switcher
+                    </li>
+                    <li>Added a checkbox for the "Supreme Intellect" dragon aura as this should influence the
+                        positive/negative rate by 10% more negative. This is maybe a bug in the game but currently this
+                        button is a placebo or a placeholder for future implementation. The game and the planner do
+                        currently not step out of line when using the aura without any update to the planner.
+                    </li>
 
-        <md-divider></md-divider>
+                    <pre>Joseph3079</pre>
 
-        <!-- <md-button class="md-raised md-primary" ng-click="calculate_combos()">Calculate Combos (advanced)</md-button>
+                    <li>
+                        <b>Random Seed column:</b>
+                        <ul>
+                            <li>The Random Seed column shows how much of a backfire chance is required to make a spell
+                                backfire. If the random seed is between 0.85 and 1, the spell will backfire with no
+                                golden cookies on screen. If the random seed is between 0.7 and 0.85, it will backfire
+                                with 1 golden cookies on screen, but it will succeed with 0 golden cookies on screen.
+                            </li>
+                            <li>The same random number is used to determine what spell Gambler's Fever Dream chooses. If
+                                you have enough magic for any of the 8 spells to be chosen after paying GFD's cost, a
+                                random seed that is between 0 and 1/8 will choose the first spell (Conjure Baked Goods),
+                                a random seed that is between 1/8 and 2/8 will choose the second spell (FtHoF), and so
+                                on. If you don't have enough magic for GFD and half of the price of Spontaneous Edifice,
+                                there will only be 7 eligible spells, so a random seed between 0 and 1/7 will give
+                                Conjure Baked Goods, a random seed between 1/7 and 2/7 will give FtHoF, and so on. This
+                                might interfere with a GFD that says it will give FtHoF, but at a low enough magic
+                                amount it might give CBG instead.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>The Supreme Intellect checkbox now actually works. Note that Supreme Intellect and Diminish
+                        Ineptitude multiply the base 15% backfire chance, and then the 15% increase in backfire chance
+                        per on screen GC is added afterward, so a cast with a successful DI, SI active, and 3 on screen
+                        GCs would have a 46.65% chance of backfiring, which would mean any spell with a random seed less
+                        than 0.5335 would succeed.
+                    </li>
+                </ul>
+            </div>
+
+            <md-divider ng-show="advancedFeatures"></md-divider>
+
+            <!-- <md-button class="md-raised md-primary" ng-click="calculate_combos()">Calculate Combos (advanced)</md-button>
         (Locate more complex combos up to the lookahead with this button. The information below is not used for normal calculations.)
         <br>
         <label>Wizard Tower level <input type="number" ng-model="level" min=1></label>
@@ -240,199 +615,640 @@
         <label>Configuration data<br><textarea ng-model="config" rows="5" cols="30" placeholder="522fthof 52di/F 22fthof R+522fthof..."></textarea></label>
         <br> -->
 
-        <ul ng-if="combos">
-            <li class="combo-listitem" ng-repeat="combo in combos">
-                <b>{{$index + min_combo_length}}x Combo</b>
-                <ul ng-if="combo.shortest.idx == -1">
-                    <li>No combo of this length</li>
+            <md-button class="md-raised{{ comboFinder?'':' md-primary' }}" ng-show="advancedFeatures"
+                ng-click="comboFinder = !comboFinder;">Combo finder</md-button>
+            <md-button class="md-raised{{ finnlessDestroyerOpen?'':' md-primary' }}" ng-show="advancedFeatures"
+                ng-click="finnlessDestroyerOpen = !finnlessDestroyerOpen;">Finnless Destroyer</md-button>
+            <div ng-show="comboFinder && advancedFeatures">
+                <ul ng-if="combos">
+                    <li class="combo-listitem" ng-repeat="combo in combos">
+                        <b>{{$index + min_combo_length}}x Combo</b>
+                        <ul ng-if="combo.shortest.idx == -1">
+                            <li>No combo of this length</li>
+                        </ul>
+                        <ul ng-if="combo.shortest.idx != -1">
+                            <li ng-if="combo.first.idx != -1"><a href="#{{combo.first.idx}}">Earliest:</a> Length
+                                {{combo.first.length}}; spread {{combo.first.length - ($index + min_combo_length)}};
+                                starting at
+                                <a href="#{{combo.first.idx}}">spell #{{combo.first.idx+1}}</a>
+                            </li>
+                            <li ng-if="combo.first.idx == -1">No combo of this length with spread below {{max_spread+1}}
+                            </li>
+                            <li><a href="#{{combo.shortest.idx}}">Shortest:</a> Length {{combo.shortest.length}}; spread
+                                {{combo.shortest.length - ($index + min_combo_length)}}; starting at <a
+                                    href="#{{combo.shortest.idx}}">spell #{{combo.shortest.idx+1}}</a></li>
+                        </ul>
+                    </li>
                 </ul>
-                <ul ng-if="combo.shortest.idx != -1">
-                    <li ng-if="combo.first.idx != -1"><a href="#{{combo.first.idx}}">Earliest:</a> Length
-                        {{combo.first.length}}; spread {{combo.first.length - ($index + min_combo_length)}}; starting at
-                        <a href="#{{combo.first.idx}}">spell #{{combo.first.idx+1}}</a></li>
-                    <li ng-if="combo.first.idx == -1">No combo of this length with spread below {{max_spread+1}}</li>
-                    <li><a href="#{{combo.shortest.idx}}">Shortest:</a> Length {{combo.shortest.length}}; spread
-                        {{combo.shortest.length - ($index + min_combo_length)}}; starting at <a
-                                href="#{{combo.shortest.idx}}">spell #{{combo.shortest.idx+1}}</a></li>
-                </ul>
-            </li>
-        </ul>
 
-        <md-divider></md-divider>
-        <br>
-        <md-checkbox ng-model="dark_mode" checkd>
-            Dark Mode
-        </md-checkbox>
-        <md-checkbox ng-model="default_font" checked>
-            Default Font
-        </md-checkbox>
-        <br>
-        <b>Options:</b>
-        <br>
-        <label>Lookahead Length <input type="number" ng-model="lookahead" min=10 max=1000></label>
+                <div class="block" style="margin-top: 5px;">
+                    <b>Options:</b>
+                    <br>
+                    <label>
+                        Min Combo 
+                        <input type="number" ng-model="min_combo_length" min=1 max=20 ng-change="flagApplySettings()">
+                        <md-tooltip>Minimum amount of BS that the combo must have.</md-tooltip>
+                    </label>
 
-        <label>Min Combo <input type="number" ng-model="min_combo_length" min=1 max=20></label>
+                    <label>
+                        Max Combo 
+                        <input type="number" ng-model="max_combo_length" min=1 max=20 ng-change="flagApplySettings()">
+                        <md-tooltip>Maximum amount of BS that the combo must have.</md-tooltip>
+                    </label>
 
-        <label>Max Combo <input type="number" ng-model="max_combo_length" min=1 max=20></label>
+                    <label>
+                        Max Spread 
+                        <input type="number" ng-model="max_spread" min=0 max=99 ng-change="flagApplySettings()">
+                        <md-tooltip>How close together the BSs must be. A spread of 0 indicates that they must all be in consecutive casts. <div class="breaker"></div>Increasing this number makes combos easier to find, but increases difficulty of execution.</md-tooltip>
+                    </label>
+                    <br>
+                    <md-checkbox ng-checked=true ng-model="include_ef_in_sequence" aria-label="Include Elder Frenzy" ng-change="flagApplySettings()">
+                        Include Elder Frenzies
+                        <md-tooltip>If on, each Elder Frenzy also counts as a Building Special.</md-tooltip>
+                    </md-checkbox>
+                    <md-checkbox ng-checked=true ng-model="skip_abominations" aria-label="Allow Abomination Skips" ng-change="flagApplySettings()">
+                        Skip Abominations
+                        <md-tooltip>Rows with GFD casting Resurrect abomination does not contribute to spread, <div class="breaker"></div>as they can be skipped for free by casting GFD.</md-tooltip>
+                    </md-checkbox>
 
-        <label>Max Spread <input type="number" ng-model="max_spread" min=0 max=99></label>
-        <br>
-        <b>(These two options are only used for GFD)</b>
-        <label>Current Mana <input type="number" ng-model="magic" min=0 max=1000></label>
-        <label>Maximum Mana <input type="number" ng-model="max_magic" min=0 max=1000></label>
-
-        <md-divider></md-divider>
-        <br>
-        <md-checkbox ng-checked=true ng-model="include_ef_in_sequence" aria-label="Include Elder Frenzy">
-            Include Elder Frenzies
-        </md-checkbox>
-
-        <md-checkbox ng-checked=true ng-model="skip_abominations" aria-label="Allow Abomination Skips">
-            Skip Abominations
-        </md-checkbox>
-
-        <md-checkbox ng-checked=true ng-model="skip_edifices" aria-label="Allow Spontaneous Edifice Skips">
-            Skip Spontaneous Edifices
-        </md-checkbox>
-
-        <md-checkbox ng-model="change_icons" aria-label="Change Icons">
-            Combo-focused Icons
-        </md-checkbox>
-
-        <md-divider></md-divider>
-
-        <label>Golden+Wrath Cookies on screen <input type="number" ng-model="on_screen_cookies" min=0 max=10></label>
-
-        <md-checkbox class="c2" ng-model="dragonflight" aria-label="Dragonflight Buff Active">
-            Dragonflight Buff Active
-        </md-checkbox>
-
-        <md-checkbox class="c2" ng-model="supremeintellect" aria-label="Supreme Intellect Aura Active">
-            Supreme Intellect Aura Active
-        </md-checkbox>
-
-        <md-checkbox class="c2" ng-model="diminishineptitude" aria-label="Diminish Ineptitude Active">
-            Diminish Ineptitude Active
-        </md-checkbox>
-
-
-        <md-divider></md-divider>
-
-        <md-button class="md-raised md-primary" ng-click="update_cookies()">Apply Settings</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell()">Cast Spell</md-button>
-
-        <md-divider></md-divider>
-
-
-        <div layout-gt-sm="row" layout="column">
-            <div flex-gt-sm="15" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>Spell #</h1>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Relative to now (This ascension | All time)</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <div class="md-list-item-text" layout="column">
-                                <a name="{{$index}}"></a>
-                                <h3>{{($index+1) + " (" + (spellsCastThisAscension+$index+1) + " | " +
-                                    (spellsCastTotal+$index+1) + ")"}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
+                    <md-checkbox ng-checked=true ng-model="skip_edifices" aria-label="Allow Spontaneous Edifice Skips" ng-change="flagApplySettings()">
+                        Skip Spontaneous Edifices
+                        <md-tooltip>Rows with GFD casting Spontaneous Edifice success does not contribute to spread, <div class="breaker"></div>as they can be skipped for free by casting GFD with at least 400 of every building.</md-tooltip>
+                    </md-checkbox>
+                </div>
             </div>
-            <md-divider></md-divider>
-			<div flex-gt-sm="15" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>Random Seed</h1>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Used to determine spell backfires and GFD spells.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <div class="md-list-item-text" layout="column">
-                                <a name="{{$index}}"></a>
-                                <h3>{{randomSeeds[$index].toFixed(4) + " (" + (randomSeeds[$index]+baseBackfireChance>1 ? 0 : ((1.075-randomSeeds[$index]-baseBackfireChance)/0.15).toFixed(0)) + " GC)"}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
+
+            <div ng-if="finnlessDestroyerOpen && advancedFeatures" class="finnless-destroyer-box">
+                <p style="font-size: 12px; color: #555; margin-top: 0;">
+                    Finnless Destroyer is a specialized combo finder for the Finnless ruleset
+                    (decacasts and beyond). It scans a long lookahead for sequences of
+                    <i>Gambler's&nbsp;→&nbsp;Force&nbsp;the&nbsp;Hand&nbsp;of&nbsp;Fate</i> casts that
+                    line up with nearby Building Specials. The scan reuses the same RNG as the main
+                    prediction table, so the seed above is what gets analyzed.
+                </p>
+                <md-button class="md-raised md-primary" ng-click="runFinnlessDestroyer()"
+                    ng-disabled="fd_running || !hasSeed">
+                    {{fd_running ? 'Running…' : 'Run Finnless Destroyer'}}
+                </md-button>
+                <md-checkbox ng-model="fd_autoRun" aria-label="Auto-run on import">
+                    Auto-run whenever a save/seed is imported
+                </md-checkbox>
+                <br>
+                <b>Options:</b>
+                <br>
+                <label>Lookahead <input type="number" ng-model="fd_lookahead" min="1" max="5000"></label>
+                <label>G!FtHoF range <input type="number" ng-model="fd_fthofRange" min="1" max="10000"></label>
+                <label>G!FtHoFs needed <input type="number" ng-model="fd_fthofNeeded" min="1" max="10000"></label>
+                <br>
+                <md-checkbox ng-model="fd_useSkips" aria-label="Use skips">
+                    Skip SE success &amp; RA (extends range)
+                </md-checkbox>
+                <md-checkbox ng-model="fd_checkResolve" aria-label="Check G!FtHoF resolve">
+                    Check G!FtHoF resolve (look for nearby BS that GFD FtHoFs could land on)
+                </md-checkbox>
+                <br>
+                <b>Output:</b>
+                <textarea readonly style="width: 100%; min-height: 160px; font-family: monospace; font-size: 12px; box-sizing: border-box;"
+                    ng-model="fd_output"
+                    placeholder="Click 'Run Finnless Destroyer' to scan the current seed."></textarea>
             </div>
-            <md-divider></md-divider>
-            <div flex-gt-sm="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>No Change</h1>
+
+            <md-divider ng-show="advancedFeatures"></md-divider>
+
+            <md-button ng-show="advancedFeatures" class="md-raised{{ highlightSettingsExpanded?'':' md-primary'}}"
+                ng-click="highlightSettingsExpanded = !highlightSettingsExpanded;">Show/Hide Highlight
+                Settings</md-button>
+
+            <div ng-show="highlightSettingsExpanded && advancedFeatures" class="highlights-box">
+                <div class="highlights-box-title">
+                    <b>Highlight Conditions</b>
+                    <div>
+                        <md-button class="md-raised" ng-click="highlightSettingsExpanded = false"
+                            style="margin: 0; box-sizing: border-box;">
+                            Close
+                        </md-button>
+                        <md-button class="md-raised{{advancedModeEnabled?' red-border':''}}"
+                            ng-click="advancedModeEnabled = !advancedModeEnabled"
+                            style="margin: 0; box-sizing: border-box;">
+                            {{advancedModeEnabled ? 'Turn OFF advanced mode' : 'Turn ON advanced mode'}}
+                        </md-button>
                     </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">No season or Christmas active.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null" title="{{cookie_list[0].description}}">
-                            <img ng-src='{{cookie_list[0].icon}}'
-                                 class="md-avatar" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{cookie_list[0].noteworthy ? ' highlightCombo' : ''}}"
-                                 layout="column">
-                                <h3>{{cookie_list[0].type}}</h3>
+                </div>
+
+                <div class="all-highlight-conditions" dnd-list="highlightConditionsList">
+                    <div class="highlight-condition-container{{ highlightRearrangementEnabled?' rearranging':'' }}"
+                        dnd-effect-allowed="move" dnd-disable-if="!highlightRearrangementEnabled"
+                        dnd-moved="highlightConditionsList.splice($index, 1)" dnd-draggable="conditionRep"
+                        ng-repeat="conditionRep in highlightConditionsList"
+                        ng-init="conditionId = conditionRep.value; condition = highlightConditions.get(conditionId); isPickerOpen = false;">
+                        <div class="highlight-condition">
+                            <!-- Condition ID Input -->
+                            <div>
+                                <label style="font-size: 12px; color: #666;">ID</label>
+                                <input class="condition-id" type="text" ng-model="condition.id"
+                                    ng-readonly="highlightRearrangementEnabled"
+                                    ng-change="conditionId = updateConditionId(conditionId, condition.id)">
                             </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div style="display: block;" id="content-3" flex-gt-sm="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>One Change</h1>
-                        <div style="flex-grow: 1;"></div>
-                        <div class="hide-column">
-                            <!--Sadly not possible to look clean with md-checkbox as it doesn't resize.-->
-                            <input type="checkbox" id="show" ng-click="collapse_interface(3)" checked=true>
-                            <label for="show">Show</label>
+
+                            <!-- Color Input -->
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px;">
+                                    Color (click this: <input class="color-square" type="color" ng-model="condition.color" 
+                                    ng-change="updateConditionColor(condition, condition.color)" ng-readonly="highlightRearrangementEnabled"> )
+                                </label>
+                                <div class="color-input-container">
+                                    <input class="condition-color" type="type" ng-model="condition.color"
+                                        ng-change="updateConditionColor(condition, condition.color)"
+                                        ng-readonly="highlightRearrangementEnabled" placeholder="Blank for no color">
+                                </div>
+                            </div>
+
+                            <!-- Condition Selector or Text Input -->
+                            <div>
+                                <label style="font-size: 12px; color: #666;">Condition</label>
+                                <div ng-if="!advancedModeEnabled" style="display: flex; gap: 6px;">
+                                    <select class="condition-select"
+                                        ng-if="!highlightRearrangementEnabled && (condition.ast.constructor.type === 'statement' && condition.ast.statementType.constructor.nonAdvancedShow)"
+                                        ng-model="condition.selectedStatement"
+                                        ng-change="updateConditionStatement(condition, condition.selectedStatement)"
+                                        ng-init="condition.selectedStatement = condition.ast.statementType.name">
+                                        <option ng-repeat="statement in availableStatements" value="{{statement.name}}" ng-if="statement.constructor.type !== 'Special'">
+                                            {{statement.name
+                                            + ' (' + statement.constructor.type + ')'}}</option>
+                                    </select>
+                                    <div class="condition-select unavailable"
+                                        ng-if="!highlightRearrangementEnabled && !(condition.ast.constructor.type === 'statement' && condition.ast.statementType.constructor.nonAdvancedShow)">
+                                        Toggle on advanced mode to modify this condition</div>
+                                    <div class="condition-select in-transit" ng-if="highlightRearrangementEnabled"
+                                        readonly>{{ condition.conditionsText }}</div>
+                                </div>
+                                <input class="condition-select advanced-input" ng-if="advancedModeEnabled" type="text"
+                                    ng-model="condition.conditionsText"
+                                    ng-change="updateConditionExpression(condition, condition.conditionsText)" style=""
+                                    placeholder="e.g., bs & fthof | ef" ng-value="condition.conditionsText">
+                            </div>
+
+                            <!-- Delete Button -->
+                            <md-button class="md-raised"
+                                ng-click="highlightRearrangementEnabled?null:(removeHighlightCondition(condition)); flagApplySettings()"
+                                style="margin: 0;">
+                                Delete
+                            </md-button>
+                        </div>
+
+                        <!-- Error Display -->
+                        <div class="condition-error" ng-if="condition.parseError">
+                            Error: {{condition.parseError.type + ': ' +
+                            (condition.parseError.message?condition.parseError.message:condition.parseError.position) }}
                         </div>
                     </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Season is not Christmas.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null" title="{{cookie_list[1].description}}">
-                            <img ng-src='{{cookie_list[1].icon}}'
-                                 class="md-avatar" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{cookie_list[1].noteworthy ? ' highlightCombo' : ''}}"
-                                 layout="column">
-                                <h3>{{cookie_list[1].type}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div flex-gt-sm="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <span>Gambler's Dream</span>
+                </div>
+
+                <!-- Condition and Control Buttons -->
+                <div class="button-grid-container">
+                    <!-- First Row: Rearrange | Add New Highlight | Reset Default -->
+                    <div class="button-grid-row-1">
+                        <md-button
+                            class="md-raised button-rearrange {{ highlightRearrangementEnabled?'active':'md-primary' }}"
+                            ng-click="toggleRearrangementMode();" style="width: 25%; flex-grow: 0;">
+                            {{ highlightRearrangementEnabled?'Disable rearrangement':'Enable rearrangement' }}
+                        </md-button>
+                        <md-button class="md-raised md-primary button-add-highlight" ng-click="addHighlightCondition(); flagApplySettings()"
+                            style="width: 50%; flex-grow: 0;">
+                            Add New Highlight
+                        </md-button>
+                        <md-button class="md-raised md-primary button-reset-default" ng-click="resetDefaultHighlights(); flagApplySettings()"
+                            style="width: 25%; flex-grow: 0;">
+                            Reset Default
+                        </md-button>
                     </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">The outcome of Gambler's Fever Dream.</md-subheader>
-                        <md-list-item class="md-2-line" ng-init="hoverText = cookie_list[2].type" ng-mouseover="hoverText = cookie_list[2].hover" ng-click="hoverText = cookie_list[2].hover" ng-mouseleave="hoverText = cookie_list[2] ? cookie_list[2].type : 'Blank'" ng-repeat="cookie_list in displayCookies" ng-click="null">
-                            <img ng-src='{{cookie_list[2].icon}}' class="md-avatar md-pixelated" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{(cookie_list[2].hasBs || cookie_list[2].hasEf) ? ' highlightCombo' : cookie_list[2].type == 'Resurrect Abomination' || (cookie_list[2].type == 'Spontaneous Edifice' && !cookie_list[2].backfire) ? ' highlightSkip' : ''}}" layout="column">
-                                <h3>{{hoverText}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
+                    <!-- Second Row: Export | Import | Advanced Help -->
+                    <div class="button-grid-row-2">
+                        <md-button class="md-raised button-export" ng-click="exportHighlights()"
+                            style="width: 33.333%; flex-grow: 0;">
+                            Export to clipboard
+                        </md-button>
+                        <md-button class="md-raised button-import" ng-click="importHighlights(); flagApplySettings()"
+                            style="width: 33.333%; flex-grow: 0;">
+                            Import
+                        </md-button>
+                        <md-button class="md-raised button-advanced-help"
+                            ng-click="advancedHelpVisibility = !advancedHelpVisibility;"
+                            style="width: 33.334%; flex-grow: 0;">
+                            Advanced Help
+                        </md-button>
+                    </div>
+                </div>
+
+                <div ng-show="advancedHelpVisibility"
+                    style="margin: auto; width: 100%; border: #ccc 1px solid; margin-top: 8px; padding: 5px;">
+                    <p style="text-align: center;">Within Advanced mode, you will be able to directly input boolean
+                        expressions to specify what exactly should be highlighted.
+                        The boolean expression is run against each outcome (for both no change and one change), and then
+                        the Gambler's Dream outcome.
+                        The expression consists of a bunch of Statements stringed together by Operators and brackets.
+                        Details below.</p>
+
+                    <h2 style="text-align: center; margin-bottom: 0px;">Operators</h4>
+                        <md-table>
+                            <md-table-container style="margin: 10px; margin-top: 0px; text-align: center;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Symbols</th>
+                                            <th>Format</th>
+                                            <th>Function</th>
+                                            <th>Example</th>
+                                            <th>Explanation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>NOT</td>
+                                            <td>!</td>
+                                            <td>![subexpression]</td>
+                                            <td>Inverts or negates the results of the subexpression.</td>
+                                            <td>!Click frenzy</td>
+                                            <td>Any effect OR GFD outcome that is NOT click frenzy.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>AND</td>
+                                            <td>&</td>
+                                            <td>[subexp] & [subexp]</td>
+                                            <td>Returns true if both subexpressions are true. The subexpressions CANNOT
+                                                be BOTH Outcome statements.</td>
+                                            <td>Frenzy & isRA:-1</td>
+                                            <td>Matches for Frenzy with the condition named "isRA" true on the previous
+                                                row.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>OR</td>
+                                            <td>|</td>
+                                            <td>[subexp] | [subexp]</td>
+                                            <td>Returns true if either subexpression is true.</td>
+                                            <td>Frenzy | Click Frenzy | Elder Frenzy</td>
+                                            <td>Matches any "Frenzy" effect.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>BRACKETS</td>
+                                            <td>()</td>
+                                            <td>([subexpression])</td>
+                                            <td>The inside subexpression is evaluated independently.</td>
+                                            <td>BS & (isBS:-1 | isBS:-2)</td>
+                                            <td>Matches for a Building Special with the condition named "isBS" true on
+                                                either the previous or the second previous row.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </md-table>
+
+                        <h2 style="text-align: center; margin-top: 5px; margin-bottom: 0px;">Statements</h4>
+                            <md-table style="margin: 10px; margin-top: 0px; text-align: center;">
+                                <md-table-container>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Subcategory</th>
+                                                <th>Examples</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="4">Outcome statements</td>
+                                                <td>Effect</td>
+                                                <td>Frenzy, Lucky, Cursed Finger, EF, BS, ...</td>
+                                                <td>An outcome from casting Force the Hand of Fate. Impossible outcomes
+                                                    such as Dragonflight are not valid. Supports community recognized
+                                                    abbreviations.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>GFD</td>
+                                                <td>Conjure Baked Goods, Diminish Ineptitude, FtHoF, ...</td>
+                                                <td>A possible spell that Gambler's Fever Dream can select and cast.
+                                                    Supports community recognized abbreviations.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Range</td>
+                                                <td>{0-0.1}, {0.25-1}, {1/7-3/7}, ...</td>
+                                                <td>A range enclosed in curly braces, indicates that the Random Seed
+                                                    entry in the row must be within this range. This is evaluated on the
+                                                    Gambler's Dream column, since the outcome is associated with the
+                                                    Random Seed. Supports integer fractions.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Specials</td>
+                                                <td>Effect, GFDOutcome, Backfire:0.15, Backfire:0.5</td>
+                                                <td>Effect, GFDOutcome: Only matches effects and Gambler's Fever Dream outcomes
+                                                    respectively. 
+                                                    Backfire: matches if the row that the cast is contained in 
+                                                    backfires with backfire chance equal to or higher than the inputted number after the colon; 
+                                                    thus applies to all casts in a row at once.</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">Condition statements</td>
+                                                <td>isBS:1, isEF:-1, your own highlighting conditions here</td>
+                                                <td>Matches if the corresponding condition is true on the row offset
+                                                    indicated by the number after the colon. For example, isBS:1 asks to
+                                                    evaluate isBS on all entries in the row after the current one, and
+                                                    returns true if any of them are true.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </md-table-container>
+                            </md-table>
+                </div>
+            </div>
+
+            <md-divider ng-show="hasSeed"></md-divider>
+
+        <md-button class="md-raised md-primary" ng-show="advancedFeatures && applySettingsPending" ng-class="{'md-warn': applySettingsPending}" ng-click="applySettingsPending = false; update_cookies()">Apply Settings</md-button>
+        <md-button class="md-raised md-primary" ng-disabled="seed===''" ng-show="hasSeed" ng-click="cast_n_spells(1)" style="min-width: 15%;">
+            Cast Spell
+            <md-tooltip md-direction="top">
+                Press this button each time after you cast a spell in-game.
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-raised{{ visualOptionsShowing?' inverted':''}}" ng-show="hasSeed" ng-click="visualOptionsShowing = !visualOptionsShowing">
+            Visual options
+            <md-tooltip>How the predictions are presented.</md-tooltip>
+        </md-button>
+        <md-button class="md-raised{{ backfireModifiersPanelOpen?' inverted':''}}" ng-show="hasSeed" ng-click="backfireModifiersPanelOpen = !backfireModifiersPanelOpen">
+            Set backfire modifiers
+            <md-tooltip>Some stuff may increase/decrease backfire chance, which will change the backfiring status of some spells.</md-tooltip>
+        </md-button>
+        <md-button class="md-raised{{ magicCountsPanelOpen?' inverted':''}}" ng-show="hasSeed && advancedFeatures" ng-click="magicCountsPanelOpen = !magicCountsPanelOpen">Configure magic counts</md-button>
+        <md-checkbox class="c2" ng-model="dragonflight" aria-label="Dragonflight BUFF Active" ng-show="hasSeed" ng-change="update_cookies()">
+            GC buff from Dragonflight Present
+            <md-tooltip md-direction="top">NOTE: NOT to be confused with the Dragonflight Aura. <div class="breaker"></div>This is the buff rarely gotten from Golden/Wrath cookies while the Dragonflight Aura is slotted, also called Dragonflight.</md-tooltip>
+        </md-checkbox>
+        <div class="options-box visual-options" ng-show="visualOptionsShowing">
+            <h3>Visual options</h3>
+            <md-divider style="margin-bottom: 5px;"></md-divider>
+            <label>Lookahead Length <input type="number" ng-model="lookahead" min=10 max=100000 ng-change="update_cookies(); saveVisualOptions()"></label>
+            <md-checkbox ng-model="dark_mode" checked ng-change="update_cookies(); saveVisualOptions()">
+                Dark Mode
+                <md-tooltip md-direction="top">Dark mode</md-tooltip>
+            </md-checkbox>
+            <md-checkbox ng-model="default_font" ng-change="update_cookies(); saveVisualOptions()">
+                Default Font
+                <md-tooltip md-direction="top">The legacy font from the previous planner iterations</md-tooltip>
+            </md-checkbox>
+            <md-checkbox ng-model="change_icons" aria-label="Change Icons" ng-change="update_cookies(); saveVisualOptions()">
+                Combo-focused Icons
+                <md-tooltip md-direction="top">Changes outcome icons to indicate the outcome itself</md-tooltip>
+            </md-checkbox>
+            <md-checkbox ng-model="hide_effect_elaboration" aria-label="Hide effect elaboration" ng-change="update_cookies(); saveVisualOptions()">
+                Hide effect elaboration
+                <md-tooltip md-direction="top">Removes description about what an effect does in the tooltips</md-tooltip>
+            </md-checkbox>
+            <md-checkbox ng-model="invert_tooltip_hide_rules" aria-label="Shift to show tooltips" ng-change="update_cookies(); saveVisualOptions(); shiftEventListenerCheck({ shiftKey: hideTooltips })">
+                Shift to show tooltips
+                <md-tooltip md-direction="top">Tooltip is hidden by default, press shift to show the tooltip instead of hiding the tooltip</md-tooltip>
+            </md-checkbox>
+            <md-checkbox ng-model="old_gfd_icons" aria-label="Legacy icons" ng-show="advancedFeatures" ng-change="update_cookies(); saveVisualOptions();">
+                Legacy icons
+                <md-tooltip md-direction="top">Uses older icons for Gambler's Fever Dream column</md-tooltip>
+            </md-checkbox>
+            <md-divider style="margin-bottom: 5px; margin-top: 5px;"></md-divider>
+            <div class="options-box">
+                <h4>Configure backfire status outcomes</h4>
+                <p>Some effects are only accessible by changing the backfire chance
+                    so that a backfiring cast becomes success, or vice versa. 
+                    <br>Use below checkboxes to toggle which ones you wish to make visible in the planner.
+                </p>
+                <md-divider style="margin-bottom: 5px;"></md-divider>
+                <span ng-repeat="id in allEffectsList" ng-init="effect = allEffects[id]" style="width: 25%; display: inline-block;">
+                    <md-checkbox ng-model="effect._settings.hiddenIndicator" ng-change="update_cookies(); saveVisualOptions()">{{ effect._name + ' (' + effect._shorthand + ')' }}</md-checkbox>
+                    <md-tooltip md-direction="top">{{ effect._description }}</md-tooltip>
+                </span>
+                <br>
+                <md-button class="md-raised" ng-click="toggleAllHiddenIndicators(true); update_cookies()">Toggle all on</md-button>
+                <md-button class="md-raised" ng-click="toggleAllHiddenIndicators(false); update_cookies()">Toggle all off</md-button>
+                <md-button class="md-raised" ng-click="resetDefaultEffectIndicators(); update_cookies()">Reset defaults</md-button>
             </div>
         </div>
-        <md-button class="md-raised md-primary" ng-click="load_more()">Load More</md-button>
-    </div>
-</div>
+        <div class="options-box backfire-modifiers" ng-show="backfireModifiersPanelOpen">
+            <h3>Backfire modifiers</h3>
+            <md-divider style="margin-bottom: 5px;"></md-divider>
+            <label>Golden+Wrath Cookies on screen <input type="number" ng-model="on_screen_cookies" min=0 max=10 ng-change="update_cookies()"> (each one adds +15% to final backfire chance)</label>
+            <br>
+
+            <md-checkbox class="c2" ng-model="supremeintellect" aria-label="Supreme Intellect Aura Active" ng-change="update_cookies()">
+                Supreme Intellect Aura Active
+                <md-tooltip md-direction="top">1.1x base backfire chance</md-tooltip>
+            </md-checkbox>
+
+            <md-checkbox class="c2" ng-model="realitybending" aria-label="Reality Bending Aura Active" ng-change="update_cookies()">
+                Reality Bending Aura Active
+                <md-tooltip md-direction="top">10% effect of Supreme Intellect<div class="breaker"></div>standalone 1.01x base backfire chance, 1.11x when used with Supreme Intellect</md-tooltip>
+            </md-checkbox>
+            <br>
+
+            <md-checkbox class="c2" ng-model="diminishineptitude" aria-label="Diminish Ineptitude Success Active" ng-change="update_cookies()">
+                Diminish Ineptitude Success Active
+                <md-tooltip md-direction="top">Reduces base backfire chance by 10 times <div class="breaker"></div>(Does not affect the additional backfire chance from onscreens)</md-tooltip>
+            </md-checkbox>
+
+            <md-checkbox class="c2" ng-model="diminishineptitudebackfire" aria-label="Diminish Ineptitude Backfire Active" ng-change="update_cookies()">
+                Diminish Ineptitude Backfire Active
+                <md-tooltip md-direction="top">Increases base backfire chance by 5 times 
+                    <div class="breaker"></div>(Does not affect the additional backfire chance from onscreens)</md-tooltip>
+            </md-checkbox>
+        </div>
+        <div class="options-box magic-counts" ng-show="magicCountsPanelOpen">
+            <h3>Configure magic counts</h3>
+            <md-divider style="margin-bottom: 5px;"></md-divider>
+            <label>Current Mana <input type="number" ng-model="magic" min=0 max=1000 ng-change="update_cookies()"></label>
+            <label>Maximum Mana <input type="number" ng-model="max_magic" min=0 max=1000 ng-change="update_cookies()"></label>
+        </div>
+        
+            <md-divider ng-show="hasSeed"></md-divider>
+            <div class="condition-error" ng-if="highlightingRuntimeErrors">{{ highlightingRuntimeErrors }}</div>
+            <md-divider ng-show="hasSeed"></md-divider>
+
+
+            <div layout-gt-sm="row" layout="column" ng-show="hasSeed">
+                <div flex-gt-sm="15" flex>
+                    <md-toolbar layout="row" class="md-hue-3">
+                        <div class="md-toolbar-tools">
+                            <h1>Spell #</h1>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">Relative to now (This ascension | All
+                                time)</md-subheader>
+                            <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
+                                <div class="md-list-item-text" layout="column">
+                                    <a name="{{$index}}"></a>
+                                    <h3>{{cookie_list.__spellIndexText}}</h3>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                <md-divider></md-divider>
+                <div flex-gt-sm="15" flex ng-show="advancedFeatures">
+                    <md-toolbar layout="row" class="md-hue-3">
+                        <div class="md-toolbar-tools">
+                            <h1>Random Seed</h1>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">Used to determine spell backfires and GFD
+                                spells.</md-subheader>
+                            <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null"
+                                spell-tooltip
+                                spell-tooltip-content="{{ cookie_list.__randomSeedTooltip }}"
+                                spell-tooltip-direction="below"
+                                spell-tooltip-class="">
+                                <div class="md-list-item-text" layout="column">
+                                    <a name="{{$index}}"></a>
+                                    <h3>{{cookie_list.__randomSeedText}}</h3>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                <md-divider ng-show="advancedFeatures"></md-divider>
+                <div flex-gt-sm="100" flex>
+                    <md-toolbar layout="row" class="md-hue-3">
+                        <div class="md-toolbar-tools">
+                            <h1>Default predictions</h1>
+                        </div>
+                    </md-toolbar>
+                    <md-content class="cast-column">
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">Only valid with no season or Christmas
+                                active.</md-subheader>
+                            <md-list-item class="md-2-line"
+                                ng-repeat="cookie_list in cookies" ng-click="null"
+                                spell-tooltip
+                                spell-tooltip-content="{{cookie_list.__noChangeTooltip}}"
+                                spell-tooltip-direction="below"
+                                spell-tooltip-class="">
+                                <img ng-src='{{cookie_list.__noChangeIcon}}'
+                                    class="md-avatar" alt="Golden Cookie" />
+                                <div class="md-list-item-text" layout="row">
+                                    <h3 ng-style="cookie_list.__noChangeStyles">
+                                        {{cookie_list.__noChangeText}}</h3>
+                                    <h3 class="md-left-margin"
+                                        ng-if="cookie_list.__noChangePostfixShow"
+                                        ng-style="cookie_list.__noChangePostfixStyles">
+                                        {{cookie_list.__noChangePostfixText}}</h3>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                <md-divider></md-divider>
+                <div style="display: block;" id="content-3" flex-gt-sm="100" flex>
+                    <md-toolbar layout="row" class="md-hue-3">
+                        <div class="md-toolbar-tools">
+                            <h1>Seasonal predictions</h1>
+                            <div style="flex-grow: 1;"></div>
+                            <div class="hide-column">
+                                <!--Sadly not possible to look clean with md-checkbox as it doesn't resize.-->
+                                <input type="checkbox" id="show" ng-click="collapse_interface(3)" checked=true>
+                                <label for="show">Show</label>
+                            </div>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">
+                                Only valid with an ongoing season that is not Christmas.
+                                <div class="inquiry-tooltip">?
+                                    <md-tooltip md-direction="bottom">
+                                        If there is an ongoing season, its name can be found in the "Special" section of
+                                        stats.
+                                    </md-tooltip>
+                                </div>
+                            </md-subheader>
+                            <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null"
+                                spell-tooltip
+                                spell-tooltip-content="{{cookie_list.__changeTooltip}}"
+                                spell-tooltip-direction="below"
+                                spell-tooltip-class="">
+                                <img ng-src='{{cookie_list.__changeIcon}}'
+                                    class="md-avatar" alt="Golden Cookie" />
+                                <div class="md-list-item-text" layout="row">
+                                    <h3 ng-style="cookie_list.__changeStyles">
+                                        {{cookie_list.__changeText}}</h3>
+                                    <h3 class="md-left-margin"
+                                        ng-if="cookie_list.__changePostfixShow"
+                                        ng-style="cookie_list.__changePostfixStyles">
+                                        {{cookie_list.__changePostfixText}}</h3>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                <md-divider ng-show="advancedFeatures"></md-divider>
+                <div flex-gt-sm="100" flex>
+                    <md-toolbar layout="row" class="md-hue-3">
+                        <div class="md-toolbar-tools">
+                            <span>Gambler's Dream</span>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">
+                                The outcome of Gambler's Fever Dream.
+                                <div class="inquiry-tooltip">?
+                                    <md-tooltip md-direction="bottom">
+                                        This is a spell in the Grimoire that randomly chooses a spell to cast, <div class="breaker"></div>with reduced magic cost and increased backfire chance.
+                                    </md-tooltip>
+                                </div>
+                            </md-subheader>
+                            <md-list-item class="md-2-line"
+                                ng-repeat="cookie_list in cookies" ng-click="null"
+                                spell-tooltip
+                                spell-tooltip-content="{{cookie_list.__gfdTooltip}}"
+                                spell-tooltip-direction="below"
+                                spell-tooltip-class="">
+                                <img ng-src='{{cookie_list.__gfdIcon}}'
+                                    class="md-avatar md-pixelated" alt="Golden Cookie" />
+                                <div class="md-list-item-text" layout="column">
+                                    <h3 ng-style="{{cookie_list.__gfdStyles}}">{{cookie_list.__gfdOutcomeText}}</h3>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+            </div>
+            <div class="load-row">
+                <span class="md-raised md-primary button-with-input load-button{{ seed===''?' disabled':'' }}" role="button" tabindex="0" ng-click="load_more()" ng-keydown="($event.key === 'Enter' || $event.keyCode === 13) && load_more()" ng-show="hasSeed">
+                    Load <input type="number" class="button-quantity no-spinner" ng-model="load_more_count" min="1" step="1" ng-click="$event.stopPropagation()" ng-keydown="$event.stopPropagation()"> more
+                </span>
+                <span class="md-raised md-primary button-with-input cast-button{{ seed===''?' disabled':'' }}" role="button" tabindex="0" ng-click="cast_spell()" ng-keydown="($event.key === 'Enter' || $event.keyCode === 13) && cast_spell()" ng-show="hasSeed">
+                    Cast <input type="number" class="button-quantity no-spinner" ng-model="cast_spell_count" min="1" step="1" ng-click="$event.stopPropagation()" ng-keydown="$event.stopPropagation()"> more spell(s)
+                </span>
+            </div>
+        </div>
+        <div ng-show="!hasSeed" style="width: 100%; text-align: center;">
+            Import your save above to see predictions for upcoming Force the Hand of Fate casts.
+            <span class="inquiry-tooltip">?
+                <md-tooltip md-direction="top">Force the Hand of Fate is a spell in the Grimoire minigame in Cookie
+                    Clicker. <div class="breaker"></div>The Grimoire is unlocked by leveling Wizard towers to level 1 with a sugar lump, <div class="breaker"></div>unlocked
+                    at 1 billion cookies baked.</md-tooltip>
+            </span>
+            This will not modify your save.
+            <br>Note: this tool cannot track changes in your game.
+            To obtain new predictions after each spell cast, re-import your new save or use the "Cast spell" button
+            after each cast.
+            <br>
+            <br>
+            <br>
+            <br><a ng-click="setHasSeed()"><small>Just show me everything already</small></a>
+        </div>
+        <div style="height: 1000px; width: 100%;" ng-if="seed === ''"></div>
 </body>
+
 </html>

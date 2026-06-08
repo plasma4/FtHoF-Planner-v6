@@ -1,10 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
 :root {
   --cast-tooltip-style: block;
 }
 
 body {
-  font-family: "Montserrat", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family:
+    'Montserrat', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+    sans-serif;
 }
 
 #app {
@@ -41,16 +44,15 @@ md-checkbox {
   height: 48px !important;
 }
 
-input[type=number].no-spinner::-webkit-outer-spin-button,
-input[type=number].no-spinner::-webkit-inner-spin-button {
+input[type="number"].no-spinner::-webkit-outer-spin-button,
+input[type="number"].no-spinner::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number].no-spinner {
+input[type="number"].no-spinner {
   -moz-appearance: textfield;
-  -webkit-appearance: textfield;
-          appearance: textfield;
+  appearance: textfield;
 }
 
 label {
@@ -80,7 +82,7 @@ pre {
 input {
   margin: 8px 2px;
   width: 80px;
-  background-color: rgba(187, 187, 187, 0.1333333333);
+  background-color: #bbb2;
   border: solid 1px #bbb;
   border-radius: 5px;
 }
@@ -112,12 +114,10 @@ md-input-container .md-errors-spacer {
   margin-top: 10px;
   margin-bottom: 0;
 }
-
 md-divider.margined {
   margin-top: 3px;
   margin-bottom: 3px;
 }
-
 small.footer {
   font-size: 25%;
 }
@@ -207,7 +207,6 @@ h3 {
   background-color: #f5f5f5;
   border-radius: 4px;
 }
-
 .highlight-condition-container.rearranging {
   border: 2px solid orange;
 }
@@ -228,7 +227,6 @@ h3 {
   margin: 0;
   padding-right: 30px;
 }
-
 .condition-color {
   width: 100%;
   min-width: 0px;
@@ -239,7 +237,6 @@ h3 {
   margin: 0;
   padding-right: 30px;
 }
-
 .color-input-container {
   display: flex;
   flex-direction: row;
@@ -247,7 +244,6 @@ h3 {
   justify-content: center;
   align-items: center;
 }
-
 .picker-open {
   background: transparent;
   border: none;
@@ -255,7 +251,7 @@ h3 {
   margin: -12px;
   z-index: 9998;
   transform: translateX(-60%) scale(0.9);
-  background-image: url("img/picker.svg");
+  background-image: url('img/picker.svg');
   width: 24px;
   height: 24px;
   flex-shrink: 0;
@@ -271,7 +267,6 @@ h3 {
 .condition-select.unavailable {
   border: 1px solid #aaa;
 }
-
 .condition-select.in-transit {
   border: 1px solid #aaa;
   background: #ddd;
@@ -344,7 +339,6 @@ h3 {
   padding: 10px;
   border-radius: 5px;
 }
-
 .flipped {
   transform: rotate(180deg);
 }
@@ -356,37 +350,31 @@ h3 {
   z-index: 12379137;
   width: 100%;
 }
-
 tooltip.active:not(._force-hidden) tip {
   /* I love hacking css */
   display: var(--cast-tooltip-style) !important;
 }
-
 .tooltips._bottom,
 .tooltips._top {
   width: 100%;
   /* ik this is extremely hacky but idk how else to make it work (also no, wrapping the tooltiped element doesn't work for some reason */
 }
-
 .cast-column:hover {
   z-index: 99999 !important;
   position: relative;
 }
-
 .historical-guide-notice {
   background-color: #fbffb4;
   padding: 10px;
   margin: 10px;
   flex: 1;
 }
-
 .advanced-material-warning {
   background-color: #ffa6a6;
   padding: 10px;
   margin: 10px;
   flex: 1;
 }
-
 .notice {
   background-color: #fbffb4;
   padding: 10px;
@@ -395,7 +383,6 @@ tooltip.active:not(._force-hidden) tip {
   display: block;
   flex: 1;
 }
-
 .notice.alternate {
   background-color: #ffdcb4;
 }
@@ -415,72 +402,90 @@ button.md-raised.inverted {
 }
 
 /* Theming */
+
 #app.dark {
-  background-color: #121212;
-}
-#app.dark .cast-tooltip {
-  background-color: #1f1f1f;
-}
-#app.dark .highlight-condition-container,
-#app.dark .condition-select.in-transit {
-  background-color: #2a2a2a;
-}
-#app.dark .condition-select,
-#app.dark .condition-id,
-#app.dark .condition-color,
-#app.dark input {
-  background-color: #1e1e1e;
-}
-#app.dark,
-#app.dark .cast-tooltip,
-#app.dark .condition-id,
-#app.dark .condition-color,
-#app.dark .condition-select,
-#app.dark table,
-#app.dark th,
-#app.dark td,
-#app.dark input {
-  color: #e0e0e0;
-}
-#app.dark .md-subheader-content,
-#app.dark .md-list-item-text > .ng-binding {
-  color: #e0e0e0;
-}
-#app.dark .block,
-#app.dark .highlights-box,
-#app.dark .finnless-destroyer-box,
-#app.dark table,
-#app.dark th,
-#app.dark td {
-  border-color: #444;
-}
-#app.dark .condition-select,
-#app.dark .condition-id,
-#app.dark .condition-color,
-#app.dark .cast-tooltip,
-#app.dark input {
-  border-color: #555;
-}
-#app.dark .historical-guide-notice {
-  background-color: #301d99;
-}
-#app.dark .advanced-material-warning {
-  background-color: #930303;
-}
-#app.dark .notice {
-  background-color: #301d99;
-}
-#app.dark .notice.alternate {
-  background-color: #0b4289;
-}
-#app.dark .options-box {
-  border-color: #b0b0b0;
-}
-#app.dark .md-raised:not(.md-primary) {
-  background-color: #aaaaaa;
-  color: black;
+  & {
+    background-color: #121212;
+  }
+
+  .cast-tooltip {
+    background-color: #1f1f1f;
+  }
+
+  .highlight-condition-container,
+  .condition-select.in-transit {
+    background-color: #2a2a2a;
+  }
+
+  .condition-select,
+  .condition-id,
+  .condition-color,
+  input {
+    background-color: #1e1e1e;
+  }
+
+  &,
+  .cast-tooltip,
+  .condition-id,
+  .condition-color,
+  .condition-select,
+  table,
+  th,
+  td,
+  input {
+    color: #e0e0e0;
+  }
+
+  .md-subheader-content,
+  .md-list-item-text > .ng-binding {
+    color: #e0e0e0;
+  }
+
+  .block,
+  .highlights-box,
+  .finnless-destroyer-box,
+  table,
+  th,
+  td {
+    border-color: #444;
+  }
+
+  .condition-select,
+  .condition-id,
+  .condition-color,
+  .cast-tooltip,
+  input {
+    border-color: #555;
+  }
+
+  .historical-guide-notice {
+    background-color: #301d99;
+  }
+  
+  .advanced-material-warning {
+    background-color: #930303;
+  }
+
+  .notice {
+    background-color: #301d99;
+  }
+  .notice.alternate {
+    background-color: #0b4289;
+  }
+
+  .options-box {
+    border-color: #b0b0b0;
+  }
+
+  .md-raised:not(.md-primary) {
+    background-color: #aaaaaa;
+    color: black;
+  }
 }
 
+// ============================================================================
+// LOAD / CAST SPELL BUTTON ROW (incremental prediction controls)
+// ============================================================================
 .load-row {
   display: flex;
   flex-wrap: wrap;
@@ -490,6 +495,10 @@ button.md-raised.inverted {
 }
 
 .load-row .button-with-input {
+  // Material-Design raised primary button look (replicated because we use
+  // a <span role="button"> so the inner <input> stays focusable and
+  // interactive — wrapping it in <md-button> / <button> is invalid HTML
+  // and silently breaks ng-model on the inner input).
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -503,14 +512,12 @@ button.md-raised.inverted {
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.010em;
   text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  user-select: none;
   background-color: #e0e0e0;
   color: rgba(0, 0, 0, 0.87);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
@@ -536,11 +543,13 @@ button.md-raised.inverted {
 }
 
 .button-quantity {
+  // Reset to a sane, vertically centered inline control.
   box-sizing: border-box;
   width: 64px;
   height: 24px;
   margin: 0 6px;
   padding: 0 6px;
+  // Vertically center the digit text inside the input itself.
   line-height: 22px;
   text-align: center;
   vertical-align: middle;
@@ -549,6 +558,8 @@ button.md-raised.inverted {
   border: 1px solid #777;
   border-radius: 3px;
   font: inherit;
+  // Make sure the input eats its own clicks / keys so they don't bubble
+  // up to the parent button (which would re-trigger the load/cast).
   pointer-events: auto;
 }
 
@@ -562,23 +573,29 @@ button.md-raised.inverted {
   height: auto !important;
   text-align: center !important;
 }
-
 .breaker {
   width: 100%;
   margin-top: -7px;
 }
-
 span.md-raised.disabled {
   background-color: rgba(0, 0, 0, 0.12) !important;
   color: rgba(0, 0, 0, 0.38) !important;
   cursor: default;
 }
 
-.dark .button-quantity {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-  border-color: #555;
+// Dark mode adjustments
+.dark {
+  .button-quantity {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #555;
+  }
 }
+
+// ============================================================================
+// SPELL TOOLTIP STYLES
+// High-performance tooltip system styles
+// ============================================================================
 
 #spell-tooltip-container {
   position: fixed;
@@ -594,127 +611,170 @@ span.md-raised.disabled {
 .spell-tooltip-item {
   position: absolute;
   pointer-events: none;
+  // Allow JS to set width; tooltip uses transform to center, so no need for explicit width centering
   box-sizing: border-box;
-}
-.spell-tooltip-item .spell-tooltip-content {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 12px 16px;
-  border: 2px solid #000000;
-  border-radius: 5px;
-  font-size: 13px;
-  line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  white-space: normal;
-  word-wrap: break-word;
-  display: block;
-  position: relative;
-  text-align: center;
-  box-sizing: border-box;
-}
-.spell-tooltip-item .spell-tooltip-content md-divider {
-  margin: 8px 0;
-  border-top-color: #000000;
-}
-.spell-tooltip-item .spell-tooltip-hint {
-  display: block;
-  margin-top: 6px;
-  font-size: 10px;
-  font-style: italic;
-  opacity: 0.7;
-  text-align: center;
-  color: #444444;
-}
-.spell-tooltip-item .spell-tooltip-warning {
-  display: block;
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  color: #e69138;
-}
-.spell-tooltip-item .spell-tooltip-arrow {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+
+  // Default content styling
+  // - white background, 2px black solid border, black text, higher padding, 5px border-radius
+  .spell-tooltip-content {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 12px 16px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 1.4;
+    // No max-width here - JS controls width based on content and target
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    white-space: normal;
+    word-wrap: break-word;
+    display: block;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  // md-divider spacing inside tooltip
+  .spell-tooltip-content md-divider {
+    margin: 8px 0;
+    border-top-color: #000000;
+  }
+
+  // Small hint text at the bottom of the tooltip
+  .spell-tooltip-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-style: italic;
+    opacity: 0.7;
+    text-align: center;
+    color: #444444;
+  }
+
+  // Warning appended below the SHIFT hint when Combo Finder / Highlight
+  // settings have been changed but not yet applied. Underlined by default
+  // (via <u> in the markup) and tinted orange to draw the eye.
+  .spell-tooltip-warning {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #e69138;
+  }
+
+  // Arrow base styles
+  // Arrow is always black (#000) to match the tooltip border
+  .spell-tooltip-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
 }
 
-.spell-tooltip-above .spell-tooltip-content {
-  margin-bottom: 0;
-}
-.spell-tooltip-above .spell-tooltip-arrow {
-  bottom: -10px;
-  border-top: 10px solid #000000;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+// ABOVE: tooltip above target, arrow points DOWN (--^--)
+.spell-tooltip-above {
+  .spell-tooltip-content {
+    margin-bottom: 0;
+  }
+
+  .spell-tooltip-arrow {
+    bottom: -10px;
+    // Triangle pointing down (border-top is the visible side)
+    // Black arrow to match tooltip border
+    border-top: 10px solid #000000;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
 }
 
-.spell-tooltip-below .spell-tooltip-content {
-  margin-top: 0;
-}
-.spell-tooltip-below .spell-tooltip-arrow {
-  top: -10px;
-  border-bottom: 10px solid #000000;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+// BELOW: tooltip below target, arrow points UP (--v--)
+.spell-tooltip-below {
+  .spell-tooltip-content {
+    margin-top: 0;
+  }
+
+  .spell-tooltip-arrow {
+    top: -10px;
+    // Triangle pointing up (border-bottom is the visible side)
+    // Black arrow to match tooltip border
+    border-bottom: 10px solid #000000;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
 }
 
-#app.dark .spell-tooltip-above .spell-tooltip-content {
-  background-color: #1f1f1f;
-  color: #e0e0e0;
-  border: 2px solid #000000;
-}
-#app.dark .spell-tooltip-above .spell-tooltip-content md-divider {
-  border-top-color: #888888;
-}
-#app.dark .spell-tooltip-above .spell-tooltip-arrow {
-  border-top-color: #000000;
-}
-#app.dark .spell-tooltip-below .spell-tooltip-content {
-  background-color: #1f1f1f;
-  color: #e0e0e0;
-  border: 2px solid #000000;
-}
-#app.dark .spell-tooltip-below .spell-tooltip-content md-divider {
-  border-top-color: #888888;
-}
-#app.dark .spell-tooltip-below .spell-tooltip-arrow {
-  border-bottom-color: #000000;
-}
-#app.dark .spell-tooltip-below .spell-tooltip-hint {
-  color: #cccccc;
-}
-#app.dark .spell-tooltip-below .spell-tooltip-warning {
-  color: #f5b270;
+// Dark mode support
+#app.dark {
+  .spell-tooltip-above {
+    .spell-tooltip-content {
+      background-color: #1f1f1f;
+      color: #e0e0e0;
+      border: 2px solid #000000;
+    }
+    .spell-tooltip-content md-divider {
+      border-top-color: #888888;
+    }
+    .spell-tooltip-arrow {
+      border-top-color: #000000;
+    }
+  }
+
+  .spell-tooltip-below {
+    .spell-tooltip-content {
+      background-color: #1f1f1f;
+      color: #e0e0e0;
+      border: 2px solid #000000;
+    }
+    .spell-tooltip-content md-divider {
+      border-top-color: #888888;
+    }
+    .spell-tooltip-arrow {
+      border-bottom-color: #000000;
+    }
+    .spell-tooltip-hint {
+      color: #cccccc;
+    }
+    .spell-tooltip-warning {
+      color: #f5b270;
+    }
+  }
 }
 
-.spell-tooltip-highlight .spell-tooltip-content {
-  background-color: #ffc107 !important;
-  color: #000 !important;
-}
-.spell-tooltip-highlight .spell-tooltip-arrow {
-  border-top-color: #ffc107 !important;
-  border-bottom-color: #ffc107 !important;
-}
-
-.spell-tooltip-error .spell-tooltip-content {
-  background-color: #f44336 !important;
-  color: #fff !important;
-}
-.spell-tooltip-error .spell-tooltip-arrow {
-  border-top-color: #f44336 !important;
-  border-bottom-color: #f44336 !important;
+// Custom class examples
+.spell-tooltip-highlight {
+  .spell-tooltip-content {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+  }
+  .spell-tooltip-arrow {
+    border-top-color: #ffc107 !important;
+    border-bottom-color: #ffc107 !important;
+  }
 }
 
-.spell-tooltip-info .spell-tooltip-content {
-  background-color: #2196f3 !important;
-  color: #fff !important;
+.spell-tooltip-error {
+  .spell-tooltip-content {
+    background-color: #f44336 !important;
+    color: #fff !important;
+  }
+  .spell-tooltip-arrow {
+    border-top-color: #f44336 !important;
+    border-bottom-color: #f44336 !important;
+  }
 }
-.spell-tooltip-info .spell-tooltip-arrow {
-  border-top-color: #2196f3 !important;
-  border-bottom-color: #2196f3 !important;
-}/*# sourceMappingURL=index.css.map */
+
+.spell-tooltip-info {
+  .spell-tooltip-content {
+    background-color: #2196f3 !important;
+    color: #fff !important;
+  }
+  .spell-tooltip-arrow {
+    border-top-color: #2196f3 !important;
+    border-bottom-color: #2196f3 !important;
+  }
+}
