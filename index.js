@@ -163,6 +163,7 @@ app.controller('myCtrl', function ($scope) {
 
   $scope.seed = '';
   $scope.hasSeed = false;
+  $scope.seedHasLoaded = false;
   $scope.ascensionMode = 0;
   $scope.spellsCastTotal = 0;
   $scope.spellsCastThisAscension = 0;
@@ -538,6 +539,20 @@ app.controller('myCtrl', function ($scope) {
   // 	delete $scope.combos
   // }
 
+  $scope.checkLookaheadWarning = function() {
+    if ($scope.lookahead > 5000) {
+      if (confirm('Your lookahead of '+$scope.lookahead+' is extremely large, which could cause instability or crashes. Proceed?')) {
+        $scope.applySettingsPending = false; 
+        $scope.update_cookies();
+      } else {
+        $scope.applySettingsPending = true;
+      }
+      return;
+    }
+    $scope.applySettingsPending = false; 
+    $scope.update_cookies();
+  }
+
   $scope.guideHidingStatuses = new Array(10).fill(false);
 
   $scope.load_game = function (str, fromURL) {
@@ -546,6 +561,7 @@ app.controller('myCtrl', function ($scope) {
     }
     str = str.trim();
     $scope.hasSeed = true;
+    $scope.seedHasLoaded = true;
     LocalStorageManager.get('hasSeed').save();
     if (str.length === 5) {
       $scope.seed = str;
@@ -592,6 +608,16 @@ app.controller('myCtrl', function ($scope) {
   $scope.setHasSeed = function() {
     $scope.hasSeed = true;
     LocalStorageManager.get('hasSeed').save();
+  }
+  $scope.updateSeedAndCastsNotify = false;
+  $scope.loadFromSeedAndCastCount = function() {
+    if (!isFinite($scope.spellsCastTotal)) $scope.spellsCastTotal = 0;
+    $scope.spellsCastThisAscension = $scope.spellsCastTotal;
+    $scope.update_cookies();
+    if ($scope.fd_autoRun) {
+      $scope.$evalAsync($scope.runFinnlessDestroyer);
+    }
+    $scope.updateSeedAndCastsNotify = false;
   }
 
   class CastRow {
@@ -749,14 +775,14 @@ app.controller('myCtrl', function ($scope) {
         ($scope.hide_effect_elaboration?'':(noChangeActive.getTooltip()
         + `<md-divider class="margined"></md-divider>`))
         + otherLabel
-        + '<b>' + noChangeOther.toString(true) + '</b>'
+        + '<b>' + noChangeOther.toString(true) + (noChangeOther.settings.hiddenIndicator?' ('+noChangeOther.shorthand+')':'') + '</b>'
         + ($scope.hide_effect_elaboration?'':'<br>'
         + noChangeOther.getTooltip())
         + tooltipHint
         + tooltipWarning;
 
       // change column
-      const changeActive = cookie_list.getCast(true);
+      const changeActive = cookie_list.getCast(true); 
       const changeOther = cookie_list.getOtherCast(true);
       this.__changeIcon = changeActive.getIcon(isBackfiring);
       this.__changeStyles = changeActive.getHighlightColor();
@@ -768,7 +794,7 @@ app.controller('myCtrl', function ($scope) {
         ($scope.hide_effect_elaboration?'':(changeActive.getTooltip()
         + `<md-divider class="margined"></md-divider>`))
         + otherLabel
-        + '<b>' + changeOther.toString(true) + '</b>'
+        + '<b>' + changeOther.toString(true) + (changeOther.settings.hiddenIndicator?' ('+changeOther.shorthand+')':'') + '</b>'
         + ($scope.hide_effect_elaboration?'':'<br>'
         + changeOther.getTooltip())
         + tooltipHint
@@ -810,6 +836,7 @@ app.controller('myCtrl', function ($scope) {
     return $scope.cookies[row];
   };
   $scope.update_cookies = function () {
+    if (!$scope.seed) { return; }
     $scope.cookies = [];
     $scope.randomSeeds = [];
     $scope.baseBackfireChance =
@@ -3030,6 +3057,25 @@ app.controller('myCtrl', function ($scope) {
       load: applyComboFinderState
     })
   );
+  LocalStorageManager.register(
+    new LocalStorageManager('menuOpening', {
+      save: () => {
+        return {
+          visualOptionsShowing: $scope.visualOptionsShowing,
+          backfireModifiersPanelOpen: $scope.backfireModifiersPanelOpen,
+          magicCountsPanelOpen: $scope.magicCountsPanelOpen
+        }
+      },
+      load: (obj) => {
+        for (let i in obj) {
+          $scope[i] = obj[i];
+        }
+      }
+    })
+  );
+  $scope.saveMenuOpens = function() {
+    LocalStorageManager.get('menuOpening').save();
+  }
 
   $scope.toggleAdvancedFeatures = function () {
     $scope.advancedFeatures = !$scope.advancedFeatures;
@@ -3253,6 +3299,7 @@ app.controller('myCtrl', function ($scope) {
   LocalStorageManager.get('hasSeed').load();
   LocalStorageManager.get('visualOptions').load();
   LocalStorageManager.get('comboFinder').load();
+  LocalStorageManager.get('menuOpening').load();
 
   var urlParams = new URLSearchParams(window.location.search);
   var seed = urlParams.get('seed');
