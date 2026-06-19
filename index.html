@@ -38,13 +38,25 @@
         <div class="content">
             <div layout="row">
                 <md-input-container flex>
-                    <label>Save Code/Seed</label>
+                    <label>Save Code{{ seedHasLoaded?'':'/Seed' }}</label>
                     <input onClick="this.select();" ng-model="save_string" style="color: grey;">
                 </md-input-container>
-                <md-button class="md-raised md-primary" ng-click="load_game()">Import Save or Seed</md-button>
+                <md-button class="md-raised md-primary" ng-click="load_game()">Import Save{{ seedHasLoaded?'':' or Seed' }}</md-button>
             </div>
-          <div class="save-export-help">Can't export save? <a href="https://cursedsliver.github.io/dryCracker" target="_blank">Find out your seed here!</a> (note: not compatible for mobile app)</div>
-          <br>
+            <div layout="row" ng-show="advancedFeatures">
+                <md-input-container flex>
+                    <label>Seed</label>
+                    <input onClick="this.select();" ng-model="seed" ng-change="updateSeedAndCastsNotify = true" style="color: grey;">
+                </md-input-container>
+                <md-divider style="margin: 5px; margin-bottom: 22px; margin-left: 8px;"></md-divider>
+                <md-input-container flex>
+                    <label>Spells cast total</label>
+                    <input onClick="this.select();" type="number" ng-change="updateSeedAndCastsNotify = true;" ng-model="spellsCastTotal" style="color: grey;">
+                </md-input-container>
+                <md-button class="md-raised md-primary{{ updateSeedAndCastsNotify?' md-warn':'' }}" ng-click="loadFromSeedAndCastCount()">Update save</md-button>
+            </div>
+            <div class="save-export-help">Can't export save? <a href="https://cursedsliver.github.io/dryCracker" target="_blank">Find out your seed here!</a> (note: not compatible for android version of Cookie Clicker)</div>
+            <br>
 
             <p ng-show="advancedFeatures" style="text-align: center;"><b>Based on FtHoF planner v1, v2, v3, v4, v5, and v6 by RebelKeithy, Skeezy,
                     Eminenti, Mylaaan, Joseph, and Leo. <br>Huge thanks to them for
@@ -250,7 +262,7 @@
                 <md-divider></md-divider>
                 <md-toolbar class="md-hue-2" style="cursor: pointer;" ng-click="guideHidingStatuses[2] = !guideHidingStatuses[2]">
                     <div class="md-toolbar-tools">
-                        <h2 flex md-truncate>Terminology</h2>
+                        <h2 flex md-truncate>Customization & Terminology</h2>
                         <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
                             <md-icon md-svg-icon="img/upArrow.svg"
                                 class="{{guideHidingStatuses[2]?'flipped':''}}"></md-icon>
@@ -258,6 +270,16 @@
                     </div>
                 </md-toolbar>
                 <div class="block" ng-if="guideHidingStatuses[2]">
+                    <p>
+                        You can configure the planner through the row of buttons just above the predictions table,
+                        <br>and more configurations are revealed by clicking the "Enable advanced features" button.
+                        <br>Generally speaking whether those configurations are revealed are saved across sessions, 
+                        so you don't have to worry about reopening them each time you use the planner.
+                        <span class="notice">
+                            Tip: If you have a save in your clipboard, you can use the paste hotkey anywhere on the page to automatically load the save.
+                        </span>
+                    </p>
+                    <md-divider></md-divider>
                     <p>
                         Some parts of the table will include some abbrevations, and this is also useful for reading more advanced parts of this guide.
                         <br>(For example, effects with an abbrevation wrapped in brackets after it indicates useful effects that are normally inaccessible, which you can hover over to view more information.)
@@ -696,7 +718,7 @@
                 <br>
                 <b>Options:</b>
                 <br>
-                <label>Lookahead <input type="number" ng-model="fd_lookahead" min="1" max="5000"></label>
+                <label>Lookahead <input type="number" ng-model="fd_lookahead" min="1" max="100000"></label>
                 <label>G!FtHoF range <input type="number" ng-model="fd_fthofRange" min="1" max="10000"></label>
                 <label>G!FtHoFs needed <input type="number" ng-model="fd_fthofNeeded" min="1" max="10000"></label>
                 <br>
@@ -966,22 +988,25 @@
 
             <md-divider ng-show="hasSeed"></md-divider>
 
-        <md-button class="md-raised md-primary" ng-show="advancedFeatures && applySettingsPending" ng-class="{'md-warn': applySettingsPending}" ng-click="applySettingsPending = false; update_cookies()">Apply Settings</md-button>
+        <md-button class="md-raised md-primary" ng-show="applySettingsPending" ng-class="{'md-warn': applySettingsPending}" ng-click="checkLookaheadWarning();">Apply Settings</md-button>
         <md-button class="md-raised md-primary" ng-disabled="seed===''" ng-show="hasSeed" ng-click="cast_n_spells(1)" style="min-width: 15%;">
             Cast Spell
             <md-tooltip md-direction="top">
                 Press this button each time after you cast a spell in-game.
             </md-tooltip>
         </md-button>
-        <md-button class="md-raised{{ visualOptionsShowing?' inverted':''}}" ng-show="hasSeed" ng-click="visualOptionsShowing = !visualOptionsShowing">
+        <md-button class="md-raised{{ visualOptionsShowing?' inverted':''}}" ng-show="hasSeed" ng-click="visualOptionsShowing = !visualOptionsShowing; saveMenuOpens()">
             Visual options
-            <md-tooltip>How the predictions are presented.</md-tooltip>
+            <md-tooltip>How the predictions are presented.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
         </md-button>
-        <md-button class="md-raised{{ backfireModifiersPanelOpen?' inverted':''}}" ng-show="hasSeed" ng-click="backfireModifiersPanelOpen = !backfireModifiersPanelOpen">
+        <md-button class="md-raised{{ backfireModifiersPanelOpen?' inverted':''}}" ng-show="hasSeed" ng-click="backfireModifiersPanelOpen = !backfireModifiersPanelOpen; saveMenuOpens();">
             Set backfire modifiers
-            <md-tooltip>Some stuff may increase/decrease backfire chance, which will change the backfiring status of some spells.</md-tooltip>
+            <md-tooltip>Some stuff may increase/decrease backfire chance, which will change the backfiring status of some spells.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
         </md-button>
-        <md-button class="md-raised{{ magicCountsPanelOpen?' inverted':''}}" ng-show="hasSeed && advancedFeatures" ng-click="magicCountsPanelOpen = !magicCountsPanelOpen">Configure magic counts</md-button>
+        <md-button class="md-raised{{ magicCountsPanelOpen?' inverted':''}}" ng-show="hasSeed && advancedFeatures" ng-click="magicCountsPanelOpen = !magicCountsPanelOpen; saveMenuOpens();">
+            Configure magic counts
+            <md-tooltip>Some stuff may increase/decrease magic counts, which may change the outcome of Gambler's Fever Dream.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
+        </md-button>
         <md-checkbox class="c2" ng-model="dragonflight" aria-label="Dragonflight BUFF Active" ng-show="hasSeed" ng-change="update_cookies()">
             GC buff from Dragonflight Present
             <md-tooltip md-direction="top">NOTE: NOT to be confused with the Dragonflight Aura. <div class="breaker"></div>This is the buff rarely gotten from Golden/Wrath cookies while the Dragonflight Aura is slotted, also called Dragonflight.</md-tooltip>
@@ -989,7 +1014,7 @@
         <div class="options-box visual-options" ng-show="visualOptionsShowing">
             <h3>Visual options</h3>
             <md-divider style="margin-bottom: 5px;"></md-divider>
-            <label>Lookahead Length <input type="number" ng-model="lookahead" min=10 max=100000 ng-change="update_cookies(); saveVisualOptions()"></label>
+            <label>Lookahead Length <input type="number" ng-model="lookahead" min=10 max=10000 ng-change="flagApplySettings(); saveVisualOptions()"></label>
             <md-checkbox ng-model="dark_mode" checked ng-change="update_cookies(); saveVisualOptions()">
                 Dark Mode
                 <md-tooltip md-direction="top">Dark mode</md-tooltip>
@@ -1248,7 +1273,7 @@
             <br>
             <br><a ng-click="setHasSeed()"><small>Just show me everything already</small></a>
         </div>
-        <div style="height: 1000px; width: 100%;" ng-if="seed === ''"></div>
+        <div style="height: 500px; width: 100%;" ng-if="seed === ''"></div>
 </body>
 
 </html>
