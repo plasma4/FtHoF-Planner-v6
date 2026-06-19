@@ -152,7 +152,7 @@ app.config(function ($mdThemingProvider) {
   $mdThemingProvider.theme('dark').dark();
 });
 
-app.controller('myCtrl', function ($scope) {
+app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
   $scope.advancedFeatures = false;
   $scope.unifiedGuideIsOpen = false;
   $scope.visualOptionsShowing = false;
@@ -559,6 +559,7 @@ app.controller('myCtrl', function ($scope) {
     if (!str) {
       str = $scope.save_string;
     }
+    if (!$scope.isValidSaveOrSeed(str)) { return; }
     str = str.trim();
     $scope.hasSeed = true;
     $scope.seedHasLoaded = true;
@@ -605,6 +606,18 @@ app.controller('myCtrl', function ($scope) {
       $scope.$evalAsync($scope.runFinnlessDestroyer);
     }
   };
+  $scope.isValidSaveOrSeed = function(str) {
+    if (!str) { return false; }
+    if (str.length === 5 && str.match(/[a-z]?/)) {
+      return true; // Is a seed
+    }
+    const main = Base64.decode(str.split('!END!')[0]);
+    const list = main.split('|');
+    if (list.length < 3) { return false; }
+    const spl = list[2].split(';');
+    if (spl.length < 5) { return false; }
+    return spl[4] && spl[4].length === 5 && spl[4].match(/[a-z]?/);
+  }
   $scope.setHasSeed = function() {
     $scope.hasSeed = true;
     LocalStorageManager.get('hasSeed').save();
@@ -1238,6 +1251,99 @@ app.controller('myCtrl', function ($scope) {
     out *= Math.floor(1 - (costMult ?? 0.1 * $scope.supremeintellect));
     return out;
   }
+
+  document.addEventListener('keydown', async function (event) {
+    const isPasteShortcut = (event.ctrlKey || event.metaKey) && event.key === 'v';
+
+    if (isPasteShortcut) {
+      // Check if user is focused on an input/textarea/editable element
+      const activeElement = document.activeElement;
+      const isInputFocused = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.isContentEditable ||
+        activeElement.getAttribute('contenteditable') === 'true' ||
+        // Also check for input types like search, email, etc.
+        (activeElement.tagName === 'INPUT' && activeElement.type !== 'button' && activeElement.type !== 'submit' && activeElement.type !== 'reset') ||
+        // Check for role="textbox" or role="searchbox"
+        activeElement.getAttribute('role') === 'textbox' ||
+        activeElement.getAttribute('role') === 'searchbox'
+      );
+
+      // If focused on an input, let the default paste behavior happen
+      if (isInputFocused) {
+        return; // Exit the function, don't prevent default or read clipboard
+      }
+
+      // Only intercept if NOT focused on an input
+      event.preventDefault();
+
+      // Check if the Clipboard API is supported
+      if (!navigator.clipboard || !navigator.clipboard.readText) {
+        console.warn('Clipboard API not supported.');
+        return;
+      }
+
+      try {
+        // Check if the Permissions API supports 'clipboard-read' query
+        // Safari and Firefox do not support querying clipboard permissions,
+        // so we skip the permission check in those browsers.
+        if (navigator.permissions && navigator.permissions.query) {
+          try {
+            const permissionStatus = await navigator.permissions.query({ name: 'clipboard-read' });
+            if (permissionStatus.state === 'denied') {
+              alert('Clipboard access is denied. Please enable it in your browser settings.');
+              return;
+            }
+          } catch (err) {
+            // Some browsers may throw for unsupported permission names;
+            // fall through and attempt clipboard read directly.
+          }
+        }
+
+        const text = await navigator.clipboard.readText();
+
+        // --- YOUR CUSTOM RESPONSE HERE ---
+        handlePasteResponse(text); // Call your custom function
+        $scope.$applyAsync();
+
+      } catch (err) {
+        // This usually happens if the clipboard is empty or contains non-text data
+        console.warn('Could not read clipboard:', err);
+      }
+    }
+  });
+
+  function handlePasteResponse(text) {
+    // Imports save automatically.
+    if ($scope.isValidSaveOrSeed(text)) { displayPasteWarning(); }
+    $scope.save_string = text;
+    $scope.load_game(text);
+    $scope.update_cookies();
+  }
+  $scope.pasteWarn = $mdDialog.alert({
+    title: 'Paste Warning',
+    textContent: 'You are attempting to load a save from your clipboard. You may need to grant this site permission to do so. (this will only be shown once)',
+    ok: 'Yes',
+    cancel: 'No'
+  });
+  let pasteWarningShown = false;
+  LocalStorageManager.register(
+    new LocalStorageManager('pasteWarningShown', {
+      save: () => {
+        return '' + pasteWarningShown?1:0;
+      }, load: str => {
+        pasteWarningShown = Boolean(parseFloat(str));
+      }
+    })
+  )
+  function displayPasteWarning() {
+    if (pasteWarningShown) { return; }
+    pasteWarningShown = true;
+    $mdDialog.show($scope.pasteWarn);
+    LocalStorageManager.get('pasteWarningShown').save();
+  }
+
 
   class FirstCallEntry {
     // GFD and backfiring shares the same RNG call, so we need to store them together
@@ -3320,4 +3426,4 @@ app.controller('myCtrl', function ($scope) {
   }
   $scope.applySettingsPending = false;
   window.app = $scope;
-});
+}]);

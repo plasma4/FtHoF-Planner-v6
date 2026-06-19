@@ -262,7 +262,7 @@
                 <md-divider></md-divider>
                 <md-toolbar class="md-hue-2" style="cursor: pointer;" ng-click="guideHidingStatuses[2] = !guideHidingStatuses[2]">
                     <div class="md-toolbar-tools">
-                        <h2 flex md-truncate>Terminology</h2>
+                        <h2 flex md-truncate>Customization & Terminology</h2>
                         <md-button class="md-icon-button" aria-label="Toggle visbility of panel">
                             <md-icon md-svg-icon="img/upArrow.svg"
                                 class="{{guideHidingStatuses[2]?'flipped':''}}"></md-icon>
@@ -270,6 +270,16 @@
                     </div>
                 </md-toolbar>
                 <div class="block" ng-if="guideHidingStatuses[2]">
+                    <p>
+                        You can configure the planner through the row of buttons just above the predictions table,
+                        <br>and more configurations are revealed by clicking the "Enable advanced features" button.
+                        <br>Generally speaking whether those configurations are revealed are saved across sessions, 
+                        so you don't have to worry about reopening them each time you use the planner.
+                        <span class="notice">
+                            Tip: If you have a save in your clipboard, you can use the paste hotkey anywhere on the page to automatically load the save.
+                        </span>
+                    </p>
+                    <md-divider></md-divider>
                     <p>
                         Some parts of the table will include some abbrevations, and this is also useful for reading more advanced parts of this guide.
                         <br>(For example, effects with an abbrevation wrapped in brackets after it indicates useful effects that are normally inaccessible, which you can hover over to view more information.)
@@ -987,13 +997,16 @@
         </md-button>
         <md-button class="md-raised{{ visualOptionsShowing?' inverted':''}}" ng-show="hasSeed" ng-click="visualOptionsShowing = !visualOptionsShowing; saveMenuOpens()">
             Visual options
-            <md-tooltip>How the predictions are presented.</md-tooltip>
+            <md-tooltip>How the predictions are presented.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
         </md-button>
         <md-button class="md-raised{{ backfireModifiersPanelOpen?' inverted':''}}" ng-show="hasSeed" ng-click="backfireModifiersPanelOpen = !backfireModifiersPanelOpen; saveMenuOpens();">
             Set backfire modifiers
-            <md-tooltip>Some stuff may increase/decrease backfire chance, which will change the backfiring status of some spells.</md-tooltip>
+            <md-tooltip>Some stuff may increase/decrease backfire chance, which will change the backfiring status of some spells.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
         </md-button>
-        <md-button class="md-raised{{ magicCountsPanelOpen?' inverted':''}}" ng-show="hasSeed && advancedFeatures" ng-click="magicCountsPanelOpen = !magicCountsPanelOpen; saveMenuOpens();">Configure magic counts</md-button>
+        <md-button class="md-raised{{ magicCountsPanelOpen?' inverted':''}}" ng-show="hasSeed && advancedFeatures" ng-click="magicCountsPanelOpen = !magicCountsPanelOpen; saveMenuOpens();">
+            Configure magic counts
+            <md-tooltip>Some stuff may increase/decrease magic counts, which may change the outcome of Gambler's Fever Dream.<div class="breaker"></div>Whether this menu is opened is saved across sessions.</md-tooltip>
+        </md-button>
         <md-checkbox class="c2" ng-model="dragonflight" aria-label="Dragonflight BUFF Active" ng-show="hasSeed" ng-change="update_cookies()">
             GC buff from Dragonflight Present
             <md-tooltip md-direction="top">NOTE: NOT to be confused with the Dragonflight Aura. <div class="breaker"></div>This is the buff rarely gotten from Golden/Wrath cookies while the Dragonflight Aura is slotted, also called Dragonflight.</md-tooltip>
