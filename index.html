@@ -1161,12 +1161,12 @@
                                 <img ng-src='{{cookie_list.__noChangeIcon}}'
                                     class="md-avatar" alt="Golden Cookie" />
                                 <div class="md-list-item-text" layout="row">
-                                    <h3 ng-style="cookie_list.__noChangeStyles">
-                                        {{cookie_list.__noChangeText}}</h3>
-                                    <h3 class="md-left-margin"
+                                    <div class="wrapper" ng-style="cookie_list.__noChangeStyles"><h3 class="inner">
+                                        {{cookie_list.__noChangeText}}</h3></div>
+                                    <div class="wrapper md-left-margin"
                                         ng-if="cookie_list.__noChangePostfixShow"
-                                        ng-style="cookie_list.__noChangePostfixStyles">
-                                        {{cookie_list.__noChangePostfixText}}</h3>
+                                        ng-style="cookie_list.__noChangePostfixStyles"><h3 class="inner">
+                                        {{cookie_list.__noChangePostfixText}}</h3></div>
                                 </div>
                             </md-list-item>
                         </md-list>
@@ -1204,12 +1204,12 @@
                                 <img ng-src='{{cookie_list.__changeIcon}}'
                                     class="md-avatar" alt="Golden Cookie" />
                                 <div class="md-list-item-text" layout="row">
-                                    <h3 ng-style="cookie_list.__changeStyles">
-                                        {{cookie_list.__changeText}}</h3>
-                                    <h3 class="md-left-margin"
+                                     <div class="wrapper" ng-style="cookie_list.__changeStyles"><h3 class="inner">
+                                        {{cookie_list.__changeText}}</h3></div>
+                                    <div class="wrapper md-left-margin"
                                         ng-if="cookie_list.__changePostfixShow"
-                                        ng-style="cookie_list.__changePostfixStyles">
-                                        {{cookie_list.__changePostfixText}}</h3>
+                                        ng-style="cookie_list.__changePostfixStyles"><h3 class="inner">
+                                        {{cookie_list.__changePostfixText}}</h3></div>
                                 </div>
                             </md-list-item>
                         </md-list>
@@ -1241,7 +1241,7 @@
                                 <img ng-src='{{cookie_list.__gfdIcon}}'
                                     class="md-avatar md-pixelated" alt="Golden Cookie" />
                                 <div class="md-list-item-text" layout="column">
-                                    <h3 ng-style="{{cookie_list.__gfdStyles}}">{{cookie_list.__gfdOutcomeText}}</h3>
+                                    <div class="wrapper full" ng-style="{{cookie_list.__gfdStyles}}"><h3 class="inner">{{cookie_list.__gfdOutcomeText}}</h3></div>
                                 </div>
                             </md-list-item>
                         </md-list>

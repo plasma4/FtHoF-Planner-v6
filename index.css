@@ -172,6 +172,26 @@ h3 {
   padding: 2px;
 }
 
+h3.inner {
+  color: white !important;
+  mix-blend-mode: difference;
+  padding: 0px;
+}
+
+.wrapper {
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 2px;
+  padding-bottom: 0px;
+  line-height: normal !important;
+}
+
+.wrapper.full {
+  width: 100%;
+}
+
 .md-left-margin {
   margin-left: 3px !important;
 }

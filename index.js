@@ -1791,7 +1791,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
   allEffects['Frenzy'] = EffectEntryFactory.create({
     name: 'Frenzy',
     description: 'Gives x7 cookie production for 77 seconds base.',
-    icon: 'img/img4.png',
+    icon: 'img/img5.png',
     shorthand: 'F',
     aliases: ['f']
   });
@@ -1839,7 +1839,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
   allEffects['Building Special'] = EffectEntryFactory.create({
     name: 'Building Special',
     description: 'Get a variable bonus to cookie production for 30 seconds base.',
-    icon: 'img/img3.png',
+    icon: 'img/img4.png',
     shorthand: 'BS',
     aliases: ['bs'],
     settings: {
@@ -2853,7 +2853,9 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
           message: `Condition ID "${id}" cannot be the same as a statement name`
         };
       }
-      this.color = color ?? '';
+      // Black is not an allowed color for highlighting due to obscure Firefox-related bugs.
+      // For black use an almost-black color, like #000001. 
+      this.color = this.constructor.isPureBlack(color) ? '' : (color ?? ''); 
       this.conditionsText = conditionsStr;
       //this.compile(this.conditionsText);
     }
@@ -2866,6 +2868,31 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
       this.intId = $scope.highlightConditions.size; // Just a unique integer for this condition, used for ng-repeat tracking
       return condition;
     }
+
+    // Helper
+    static isPureBlack(c) {
+      if (typeof c !== 'string') return false;
+      const s = c.trim().toLowerCase();
+      // Hex: #000000, #000, #000000ff, #000f, #0000, #00000080, etc.
+      if (s.startsWith('#')) {
+        const hex = s.slice(1);
+        if (/^[0-9a-f]{3}([0-9a-f])?$/.test(hex)) {
+          // 3-digit or 4-digit: #RGB or #RGBA — each digit is repeated
+          return hex[0] === '0' && hex[1] === '0' && hex[2] === '0';
+        }
+        if (/^[0-9a-f]{6}([0-9a-f]{2})?$/.test(hex)) {
+          // 6-digit or 8-digit: #RRGGBB or #RRGGBBAA
+          return hex.slice(0, 6) === '000000';
+        }
+      }
+      // rgb() / rgba()
+      const rgbMatch = s.match(/^rgba?\(\s*0\s*,\s*0\s*,\s*0\s*(?:,\s*[\d.]+%?)?\s*\)$/);
+      if (rgbMatch) return true;
+      // hsl() / hsla() — lightness 0% means black regardless of hue/saturation
+      const hslMatch = s.match(/^hsla?\(\s*[\d.]+(?:%|deg|rad|turn)?\s*,\s*[\d.]+%?\s*,\s*0%?\s*(?:,\s*[\d.]+%?)?\s*\)$/);
+      if (hslMatch) return true;
+      return false;
+    };
 
     get enabled() {
       return this._enabled;
@@ -3022,7 +3049,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
     HighlightCondition.register(
       new HighlightCondition(
         'notableFtHoF',
-        'Force the Hand of Fate & (isBS:1 | isEF:1)',
+        'Force the Hand of Fate & (isBS:1 | isEF:1) & !gfdBackfiring:1',
         '#ffff00'
       )
     );
@@ -3300,8 +3327,11 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
   };
   $scope.updateConditionColor = function (condition, newColor) {
     if (condition) {
-      condition.color =
-        newColor && newColor.trim().length > 0 ? newColor : null;
+      if (HighlightCondition.isPureBlack(newColor)) { 
+        alert('Black is not an allowed color for highlighting due to obscure Firefox-related bugs. For black use an almost-black color, like #000001.');
+      }
+      condition.color = HighlightCondition.isPureBlack(newColor) ? '' : (
+        newColor && newColor.trim().length > 0 ? newColor : null);
     }
     $scope.flagApplySettings();
     LocalStorageManager.get('highlights').save();
