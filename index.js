@@ -254,7 +254,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
     const gfdOutcome = gambler.GFDOutcome();
     const gfdName = gfdOutcome?.name;
     const gfdBackfired = gambler.backfires(
-      Math.max($scope.baseBackfireChance, 0.5)
+      Math.max($scope.backfireChance, 0.5)
     );
     const isSkip =
       ($scope.skip_abominations && gfdName == 'Resurrect Abomination') ||
@@ -651,12 +651,12 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
       this.index = index;
     }
 
-    getCast(change, backfireChance = $scope.baseBackfireChance) {
+    getCast(change, backfireChance = $scope.backfireChance) {
       return change ?
           this.getCastChange(backfireChance)
         : this.getCastNoChange(backfireChance);
     }
-    getOtherCast(change, backfireChance = $scope.baseBackfireChance) {
+    getOtherCast(change, backfireChance = $scope.backfireChance) {
       const backfiring = backfireChance + this.firstCall.value >= 1 ? 0 : 1;
       return change ?
           this.getCastChange(backfiring)
@@ -671,16 +671,16 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
       return backfiring ? this.changeBackfire : this.changeSuccess;
     }
 
-    backfiring(backfireChance = $scope.baseBackfireChance) {
+    backfiring(backfireChance = $scope.backfireChance) {
       return backfireChance + this.firstCall.value >= 1;
     }
 
-    stringify(change, backfireChance = $scope.baseBackfireChance) {
+    stringify(change, backfireChance = $scope.backfireChance) {
       return change ?
           this.stringifyChange(backfireChance)
         : this.stringifyNoChange(backfireChance);
     }
-    postfix(change, backfireChance = $scope.baseBackfireChance) {
+    postfix(change, backfireChance = $scope.backfireChance) {
       return change ?
           this.postfixChange(backfireChance)
         : this.postfixNoChange(backfireChance);
@@ -751,7 +751,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
 
     computeDisplayCaches() {
       const cookie_list = this;
-      const baseBackfireChance = $scope.baseBackfireChance;
+      const baseBackfireChance = $scope.backfireChance;
       const access_cookie = $scope.access_cookie;
       this.__spellIndexText = (this.index + 1) + " (" + ($scope.spellsCastThisAscension + this.index + 1) + " | " +
         ($scope.spellsCastTotal + this.index + 1) + ")";
@@ -788,7 +788,8 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
         ($scope.hide_effect_elaboration?'':(noChangeActive.getTooltip()
         + `<md-divider class="margined"></md-divider>`))
         + otherLabel
-        + '<b>' + noChangeOther.toString(true) + (noChangeOther.settings.hiddenIndicator?' ('+noChangeOther.shorthand+')':'') + '</b>'
+        + '<b>' + noChangeOther.toString(true) + (noChangeOther.settings.hiddenIndicator?' ('+noChangeOther.shorthand+')':'') + '</b><br>'
+        + '(Backfires when chance is above <b>' + ((Math.ceil(10000 - cookie_list.firstCall.value * 10000) / 100).toFixed(2)) + '%</b>)'
         + ($scope.hide_effect_elaboration?'':'<br>'
         + noChangeOther.getTooltip())
         + tooltipHint
@@ -1359,7 +1360,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
       return this.GFDRS;
     }
 
-    backfires(backfireChance = $scope.baseBackfireChance) {
+    backfires(backfireChance = $scope.backfireChance) {
       return this.value + backfireChance >= 1;
     }
 
@@ -1424,13 +1425,13 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
       if (alreadyBackfires) {
         sections.push(
           '<b>' + fc.toFixed(10) + '</b>' +
-          '<br>Backfire chance above this to backfire: <b>' + (minBackfireChance * 100).toFixed(2) + '%</b>' +
+          '<br>Backfire chance above this to backfire: <b>' + (Math.ceil(minBackfireChance * 10000) / 100).toFixed(2) + '%</b>' +
           '<br><b>Already backfires</b> (with current settings)'
         );
       } else {
         sections.push(
           '<b>' + fc.toFixed(10) + '</b>' +
-          '<br>Backfire chance above this to backfire: <b>' + (minBackfireChance * 100).toFixed(2) + '%</b>' +
+          '<br>Backfire chance above this to backfire: <b>' + (Math.ceil(minBackfireChance * 10000) / 100).toFixed(2) + '%</b>' +
           '<br>Min onscreens to backfire: <b>' + onscreens.amount + '</b>' +
           (onscreens.SI ? ' With <b>SI</b>' : '') +
           (onscreens.RB ? ' With <b>RB</b>' : '')
@@ -1565,7 +1566,7 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
         if (!nextRow) {
           html += mdDivider + 'Load more rows to see FtHoF outcome.';
         } else {
-          const fthofBackfire = Math.max($scope.baseBackfireChance, 0.5);
+          const fthofBackfire = Math.max($scope.backfireChance, 0.5);
           const defaultOutcome = nextRow.stringifyNoChange(fthofBackfire);
           const seasonalOutcome = nextRow.stringifyChange(fthofBackfire);
           html += mdDivider +
@@ -1586,9 +1587,9 @@ app.controller('myCtrl', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
          */
         const castRow = relevantRow;
         return (
-          castRow.stringifyNoChange(Math.max($scope.baseBackfireChance, 0.5)) +
+          castRow.stringifyNoChange(Math.max($scope.backfireChance, 0.5)) +
           '; ' +
-          castRow.stringifyChange(Math.max($scope.baseBackfireChance, 0.5))
+          castRow.stringifyChange(Math.max($scope.backfireChance, 0.5))
         );
       }
       return this.GFDOutcomeText();
